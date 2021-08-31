@@ -82,4 +82,6 @@ export default function App2() {
 ## demo展示
 示例参考：[codesanbox - manage-table](https://codesandbox.io/s/sad-jones-2tgf5)
 
+![](./img/lia.png)
+
 ![](./img/demo.png)
