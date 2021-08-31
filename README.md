@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="450px" src="https://github.com/tnfe/manage-table/blob/master/img/logo.png?raw=true" />
+  <img width="400px" src="https://github.com/tnfe/manage-table/blob/master/img/logo.png?raw=true" />
 </p>
 
 # manage-table
