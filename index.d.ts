@@ -18,6 +18,5 @@ export interface IMangeTableProps<RecordType extends object = any> extends Table
   columns: ManageColumnType[];
 }
 
-declare class ManageTable extends React.Component<IMangeTableProps> {
-}
+declare const ManageTable: React.ForwardRefExoticComponent<IMangeTableProps<any> & RefAttributes<unknown>>;
 export default ManageTable;
