@@ -82,6 +82,6 @@ export default function App2() {
 ## demo展示
 示例参考：[codesanbox - manage-table](https://codesandbox.io/s/sad-jones-2tgf5)
 
-![](https://raw.githubusercontent.com/tnfe/manage-table/master/img/lia.png?token=ADLABBJUC7VNPM3VJ2EIY4TBFXTPM)
+![](https://github.com/tnfe/manage-table/blob/master/img/lia.png?raw=true)
 
-![](https://raw.githubusercontent.com/tnfe/manage-table/master/img/demo.png?token=ADLABBKV5XI2IPQDDUYFQ4LBFXTQE)
+![](https://github.com/tnfe/manage-table/blob/master/img/demo.png?raw=true)
