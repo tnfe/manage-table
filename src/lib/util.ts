@@ -22,19 +22,23 @@ const setLSShowCol = (lsName: string, values: string[]) => {
 
 export const computeColumns = (lsName: string, columns: ManageColumnType[], checked: string[]) => {
   const lsChecked: string[] = [];
-  const lsShow = getLSShowCol(lsName);
+  const lsShowList = getLSShowCol(lsName);
+
+  // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
     if (checked.length !== 0) {
       return checked.includes(item.dataIndex as string);
     }
-    if (lsShow && lsShow.length > 0) {
-      return lsShow.includes(item.dataIndex as string);
+    if (lsShowList && lsShowList.length > 0) {
+      return lsShowList.includes(item.dataIndex as string);
     }
     return item.show;
   };
+
   const allKeys: KeyRecord[] = [];
   const computed: ColumnType<any>[] = [];
   let action;
+
   columns.forEach((item) => {
     if (item.dataIndex === 'action') {
       const { show, ...props } = item;
@@ -53,10 +57,12 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[], chec
       computed.push(props);
     }
   });
+
   // ls 暂存
   if (lsChecked.length !== 0) {
     setLSShowCol(lsName, lsChecked);
   }
+  // 如果存在操作列
   if (action) {
     computed.push(action);
   }

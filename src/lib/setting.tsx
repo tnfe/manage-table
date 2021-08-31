@@ -21,6 +21,8 @@ const stBlank: React.CSSProperties = {
   cursor: 'pointer',
 };
 const stCloseIcon: React.CSSProperties = { float: 'right', lineHeight: '28px' };
+
+// 暂存数据
 let saveMap: Record<string, string> = {};
 
 interface SettingContentProps {
@@ -35,12 +37,15 @@ const SettingContent = (props: SettingContentProps) => {
   const [clickedColCount, setClickedColCount] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [allChecked, setAllChecked] = useState<boolean>(false);
+
   // 准备数据阶段
   useEffect(() => {
     const options: CheckboxOptionType[] = [];
     const checkeds: string[] = [];
     let checkedNum = 0;
     let total = 0;
+
+    // 遍历可选项
     const map: Record<string, string> = {};
     props.choose.forEach((item) => {
       const dataIndex = item.dataIndex as string;
@@ -57,6 +62,7 @@ const SettingContent = (props: SettingContentProps) => {
         }
       }
     });
+    // 初始化状态
     saveMap = map;
     setTotalCount(total);
     setBigOptions(options);
@@ -65,6 +71,8 @@ const SettingContent = (props: SettingContentProps) => {
     setAllChecked(checkedNum === totalCount);
     setIndeterminate(checkedNum !== totalCount);
   }, [props.choose]);
+
+  // 全局选中操作
   const changeAllChecked = (event: CheckboxChangeEvent) => {
     const checked = event.target.checked;
     setIndeterminate(false);
@@ -78,6 +86,8 @@ const SettingContent = (props: SettingContentProps) => {
       setCheckedList([]);
     }
   };
+
+  // 单选操作
   const handleChange = (values: CheckboxValueType[]) => {
     setCheckedList(values as string[]);
     setIndeterminate(values.length !== totalCount);
@@ -85,6 +95,7 @@ const SettingContent = (props: SettingContentProps) => {
     setAllChecked(values.length === totalCount);
   };
 
+  // 删除选中的元素
   const unClickedColKey = (key: string) => {
     const now = checkedList?.slice();
     const index = now?.indexOf(key);
@@ -96,6 +107,7 @@ const SettingContent = (props: SettingContentProps) => {
     }
   };
 
+  // 清除全部选中
   const clearLockColumn = () => {
     setCheckedList([]);
     setClickedColCount(0);
@@ -154,9 +166,11 @@ const SettingContent = (props: SettingContentProps) => {
           })}
         </Checkbox.Group>
       </Card>
+
       <div style={stBlank}>
         <DoubleLeftOutlined onClick={clearLockColumn} />
       </div>
+
       <Card title={`已选字段 ${clickedColCount}`} style={stCardRight} bodyStyle={stCardBody}>
         {chooseList}
       </Card>
