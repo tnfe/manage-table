@@ -1,4 +1,6 @@
-![](https://github.com/tnfe/manage-table/blob/master/img/logo.png?raw=true)
+<p align="center">
+  <img width="450px" src="https://github.com/tnfe/manage-table/blob/master/img/logo.png?raw=true" />
+</p>
 
 # manage-table
 基于antd + react 进行封装，使项目可以对组件进行管理
