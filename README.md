@@ -2,7 +2,11 @@
   <img width="400px" src="https://github.com/tnfe/manage-table/blob/master/img/logo.png?raw=true" />
 </p>
 
-# manage-table
+<p align="center">
+<a href="https://www.npmjs.org/package/manage-table"><img title="npm package" src="https://img.shields.io/npm/v/manage-table.svg" /></a>
+<a href="https://npmjs.org/package/manage-table"><img title="NPM downloads" src="http://img.shields.io/npm/dm/manage-table.svg" /></a>
+</p>
+
 在日常业务中，经常会使用到antd的table组件。
 使用的最开始只显示几行字段，可是后面展示的字段越来越多，而且不同的人希望看到的字段是不一样的。
 基于此，封装了`manage-table`, 内部还是使用了antd，只是增加了对显示列的灵活操作的处理逻辑。
@@ -134,3 +138,6 @@ npm run build
 ```
 
 
+## License
+
+[The MIT License](https://opensource.org/licenses/MIT).
