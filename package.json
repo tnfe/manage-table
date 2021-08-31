@@ -2,7 +2,19 @@
   "name": "manage-table",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
+  "module": "es/index.js",
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tnfe/manage-table.git"
+  },
+  "peerDependencies": {
+    "@ant-design/icons": "^4.6.4",
+    "antd": "^4.12.0",
+    "react": "^17.0.0"
+  },
+  "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -10,16 +22,19 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react-dom": "^17.0.0",
     "react-scripts": "4.0.3",
+    "rollup": "^1.32.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-terser": "^5.3.1",
+    "rollup-plugin-typescript": "^1.0.1",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "rm -rf dist && rm -rf es && rm -rf lib && tsc & rollup -c",
+    "test": "react-scripts s rc",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,5 +54,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "files": [
+    "dist/*",
+    "es/*",
+    "index.d.ts",
+    "README.md",
+    "package.json"
+  ]
 }

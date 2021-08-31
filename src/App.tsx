@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import ManageTable  from "./lib";
 import './App.css';
 
 function App() {
+  const mockColumns = new Array(50).fill('').map((_item: string, index) => {
+    return {
+      dataIndex: 'title' + index,
+      key: 'title' + index,
+      title: '标题' + index,
+      show: index % 3 === 0,
+    };
+  });
+  mockColumns.push({
+    dataIndex: 'action',
+    key: 'action',
+    title: '操作',
+    show: true,
+  });
+  console.log(mockColumns)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ManageTable name="testTable" columns={mockColumns}/>
     </div>
   );
 }
