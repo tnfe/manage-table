@@ -1,5 +1,6 @@
 import ManageTable  from "./lib";
 import './App.css';
+import React from "react";
 
 function App() {
   const mockColumns = new Array(50).fill('').map((_item: string, index) => {
@@ -16,7 +17,6 @@ function App() {
     title: '操作',
     show: true,
   });
-  console.log(mockColumns)
   return (
     <div className="App">
       <ManageTable name="testTable" columns={mockColumns}/>

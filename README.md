@@ -1,46 +1,83 @@
-# Getting Started with Create React App
+# manage-table
+基于antd + react 进行封装，使项目可以对组件进行管理
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 使用
+支持直接引用，使用内置设置
+```typescript
+import ManageTable  from "manage-table";
+import './App.css';
+import React from "react";
 
-## Available Scripts
+function App() {
+  const mockColumns = new Array(50).fill('').map((_item: string, index) => {
+    return {
+      dataIndex: 'title' + index,
+      key: 'title' + index,
+      title: '标题' + index,
+      show: index % 3 === 0,
+    };
+  });
+  mockColumns.push({
+    dataIndex: 'action',
+    key: 'action',
+    title: '操作',
+    show: true,
+  });
+  console.log(mockColumns)
+  return (
+    <div className="App">
+      <ManageTable name="testTable" columns={mockColumns}/>
+    </div>
+  );
+}
 
-In the project directory, you can run:
+export default App;
 
-### `yarn start`
+```
+支持自定义设置：
+```javascript
+import React from "react";
+import { Button } from "antd";
+import ManageTable from "manage-table";
+import "./styles.css";
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+export default function App2() {
+  const mockColumns = new Array(50).fill("").map((_item, index) => {
+    return {
+      dataIndex: "title" + index,
+      key: "title" + index,
+      title: "标题" + index,
+      show: index % 3 === 0
+    };
+  });
+  mockColumns.push({
+    dataIndex: "action",
+    key: "action",
+    title: "操作",
+    show: true
+  });
+  const ref = React.createRef();
+  const handleShowModal = () => {
+    ref.current.showModal();
+  };
+  const SettingHeader = (
+    <div style={{ textAlign: "left" }}>
+      <Button onClick={handleShowModal}>自定义设置</Button>
+    </div>
+  );
+  return (
+    <div className="App">
+      <ManageTable
+        ref={ref}
+        SettingComp={SettingHeader}
+        name="testTable2"
+        columns={mockColumns}
+      />
+    </div>
+  );
+}
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## demo展示
+![](./img/demo.png)
