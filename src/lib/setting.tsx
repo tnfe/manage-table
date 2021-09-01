@@ -20,6 +20,7 @@ const stBlank: React.CSSProperties = {
   cursor: 'pointer',
 };
 const stCloseIcon: React.CSSProperties = { float: 'right', lineHeight: '28px' };
+const stChooseItem = { lineHeight: '28px', border: '1px solid #d9d9d9', padding: '0 5px', margin: '2px 0', };
 
 // 暂存数据
 let saveMap: Record<string, string> = {};
@@ -163,7 +164,7 @@ const SettingContent = (props: SettingContentProps) => {
     <div>
       {checkedList?.map((item) => {
         return (
-          <div style={{ lineHeight: '28px' }} key={item}>
+          <div style={stChooseItem} key={item}>
             <MoreOutlined />
             {saveMap[item]}
             <CloseOutlined style={stCloseIcon} onClick={() => unClickedColKey(item)} />

@@ -36,10 +36,10 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
     if (checked.length !== 0) {
-      return checked.includes(item.dataIndex as string);
+      return checked.includes(item.dataIndex);
     }
     if (lsShowList && lsShowList.length > 0) {
-      return lsShowList.includes(item.dataIndex as string);
+      return lsShowList.includes(item.dataIndex);
     }
     return item.show;
   };
@@ -52,7 +52,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
     }
     const show = isShow(info);
     records.push({
-      dataIndex: (info.dataIndex as string) || (info.key as string),
+      dataIndex: info.dataIndex,
       title: info.title,
       show: show,
     });
@@ -75,7 +75,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
       })
     } else {
       // 散列
-      resolveInfo(item, single);
+      resolveInfo(item as ManageColumnType, single);
     }
   });
   if (single.length) {

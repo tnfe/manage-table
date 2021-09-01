@@ -31,5 +31,11 @@ export const mockGroup = () => {
       }),
     };
   });
+  data[3].records.push({
+    dataIndex: 'action',
+    key: 'action',
+    title: '操作2',
+    show: true,
+  })
   return data;
 }

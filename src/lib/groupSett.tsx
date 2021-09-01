@@ -1,6 +1,6 @@
 import React, { useEffect, useImperativeHandle, useState } from "react";
 import { KeyRecord } from "./type";
-import { Checkbox, CheckboxOptionType, Divider } from "antd";
+import { Checkbox, CheckboxOptionType, Divider, Tag } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 
@@ -108,7 +108,7 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
 
   const cardTitle = props.title ? (
     <span>
-      {props.title}
+      <Tag color="#3c71f8">{props.title}</Tag>
       <Checkbox
         indeterminate={indeterminate}
         onChange={changeAllChecked}

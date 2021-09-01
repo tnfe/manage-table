@@ -4,6 +4,7 @@ import { ColumnType } from "antd/es/table";
 
 export interface ManageColumnType extends ColumnType<any> {
   show?: boolean;
+  dataIndex: string;
 }
 
 export interface GroupManageColumn {
