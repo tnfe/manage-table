@@ -3,7 +3,7 @@ import Table from 'antd/es/table/Table';
 import { Button, Modal } from 'antd';
 import { computeColumns } from './util';
 import SettingContent from './setting';
-import { KeyRecord } from './type';
+import { GroupRecord } from './type';
 import { ColumnType } from 'antd/es/table';
 import { IMangeTableProps } from "../../index";
 
@@ -25,7 +25,7 @@ const DefaultSetting = (props: SettingProps) => {
 const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const { name, setTitle, SettingComp, ...tableProps } = props;
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showColKeys, setShowColKeys] = useState<KeyRecord[]>([]);
+  const [showColKeys, setShowColKeys] = useState<GroupRecord[]>([]);
   const [computed, setComputed] = useState<ColumnType<any>[]>([]);
   const [showKeys, setShowKeys] = useState<string[]>([]);
 

@@ -1,6 +1,6 @@
-import { KeyRecord } from './type';
+import { GroupRecord, KeyRecord } from './type';
 import { ColumnType } from 'antd/es/table';
-import { ManageColumnType } from "../../index";
+import { GroupManageColumn, ManageColumnType } from "../../index";
 
 const ManageTable = 'ManageTable';
 
@@ -20,9 +20,18 @@ const setLSShowCol = (lsName: string, values: string[]) => {
   localStorage.setItem(ManageTable + '_' + lsName, JSON.stringify(values));
 };
 
-export const computeColumns = (lsName: string, columns: ManageColumnType[], checked: string[]) => {
+interface ComputeReturn {
+  allKeys: GroupRecord[];
+  computed: ColumnType<any>[];
+}
+
+export const computeColumns = (lsName: string, columns: ManageColumnType[] | GroupManageColumn[], checked: string[]): ComputeReturn => {
   const lsChecked: string[] = [];
   const lsShowList = getLSShowCol(lsName);
+  const allKeys: GroupRecord[] = [];
+  const single: KeyRecord[] = [];
+  const computed: ColumnType<any>[] = [];
+  let action;
 
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
@@ -35,28 +44,45 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[], chec
     return item.show;
   };
 
-  const allKeys: KeyRecord[] = [];
-  const computed: ColumnType<any>[] = [];
-  let action;
-
-  columns.forEach((item) => {
-    if (item.dataIndex === 'action') {
-      const { show, ...props } = item;
+  const resolveInfo = (info:ManageColumnType, records: KeyRecord[]) => {
+    if (info.dataIndex === 'action') {
+      const { show, ...props } = info;
       action = props;
       return;
     }
-    const show = isShow(item);
-    allKeys.push({
-      dataIndex: (item.dataIndex as string) || (item.key as string),
-      title: item.title,
+    const show = isShow(info);
+    records.push({
+      dataIndex: (info.dataIndex as string) || (info.key as string),
+      title: info.title,
       show: show,
     });
     if (show) {
-      const { show, ...props } = item;
-      lsChecked.push(item.dataIndex as string);
+      const { show, ...props } = info;
+      lsChecked.push(info.dataIndex as string);
       computed.push(props);
     }
+  }
+  columns.forEach((item) => {
+    if ("records" in item && item.records) {
+      // 组
+      const groupItem: KeyRecord[] = []
+      item.records.forEach((column) => {
+        resolveInfo(column, groupItem);
+      });
+      allKeys.push({
+        title: item.title,
+        records: groupItem,
+      })
+    } else {
+      // 散列
+      resolveInfo(item, single);
+    }
   });
+  if (single.length) {
+    allKeys.push({
+      records: single,
+    });
+  }
 
   // ls 暂存
   if (lsChecked.length !== 0) {
