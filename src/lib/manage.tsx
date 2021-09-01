@@ -24,34 +24,32 @@ const DefaultSetting = (props: SettingProps) => {
 // 主入口
 const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const { name, setTitle, SettingComp, ...tableProps } = props;
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [showColKeys, setShowColKeys] = useState<GroupRecord[]>([]);
-  const [computed, setComputed] = useState<ColumnType<any>[]>([]);
-  const [showKeys, setShowKeys] = useState<string[]>([]);
-
-  // 监听变化
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false); // 展示设置弹窗
+  const [groupRecordList, setGroupRecordList] = useState<GroupRecord[]>([]); // 弹窗展示所需要的column组
+  const [computedColumns, setComputedColumns] = useState<ColumnType<any>[]>([]); // 经过计算后需要进行展示的column，传给Table
+  const [computedShowKeys, setComputedShowKeys] = useState<string[]>([]); // 存储计算后传递给Table展示的column的dataIndex合集，map
   useEffect(() => {
-    const { allKeys, computed } = computeColumns(name, props.columns, showKeys);
-    setComputed(computed);
-    setShowColKeys(allKeys);
-  }, [showModal, showKeys, props.columns]);
+    const { groupRecordList, computedColumns } = computeColumns(name, props.columns, computedShowKeys);
+    setComputedColumns(computedColumns);
+    setGroupRecordList(groupRecordList);
+  }, [shouldShowModal, computedShowKeys]);
 
   // 向外暴露方法
   useImperativeHandle(ref, () => {
     return {
       showModal: () => {
-        setShowModal(true);
+        setShouldShowModal(true);
       },
       hideModal: () => {
-        setShowModal(false);
+        setShouldShowModal(false);
       },
     };
   });
 
   //保存变更
   const handleOk = (keys: string[]) => {
-    setShowKeys(keys);
-    setShowModal(false);
+    setComputedShowKeys(keys);
+    setShouldShowModal(false);
   };
 
   return (
@@ -61,22 +59,22 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
       ) : (
         <DefaultSetting
           handleClick={() => {
-            setShowModal(true);
+            setShouldShowModal(true);
           }}
         />
       )}
 
-      <Table {...tableProps} columns={computed} />
+      <Table {...tableProps} columns={computedColumns} />
 
       <Modal
-        visible={showModal}
+        visible={shouldShowModal}
         width="80%"
         style={{ height: '80vh' }}
         title={setTitle || '设置显示字段'}
-        onCancel={() => setShowModal(false)}
+        onCancel={() => setShouldShowModal(false)}
         footer={false}
       >
-        <SettingContent choose={showColKeys} onCancel={() => setShowModal(false)} onOk={(keys) => handleOk(keys)} />
+        <SettingContent choose={groupRecordList} onCancel={() => setShouldShowModal(false)} onOk={(keys) => handleOk(keys)} />
       </Modal>
     </div>
   );

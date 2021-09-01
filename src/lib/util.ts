@@ -8,7 +8,8 @@ const getLSShowCol = (lsName: string) => {
   const values = localStorage.getItem(ManageTable + '_' + lsName);
   if (values) {
     try {
-      return JSON.parse(values);
+      const res = JSON.parse(values)
+      return Array.isArray(res) ? res : [];
     } catch (error) {
       return [];
     }
@@ -21,45 +22,45 @@ const setLSShowCol = (lsName: string, values: string[]) => {
 };
 
 interface ComputeReturn {
-  allKeys: GroupRecord[];
-  computed: ColumnType<any>[];
+  groupRecordList: GroupRecord[];
+  computedColumns: ColumnType<any>[];
 }
 
 export const computeColumns = (lsName: string, columns: ManageColumnType[] | GroupManageColumn[], checked: string[]): ComputeReturn => {
   const lsChecked: string[] = [];
-  const lsShowList = getLSShowCol(lsName);
-  const allKeys: GroupRecord[] = [];
+  const includeList: string[] = checked.length > 0 ? checked : getLSShowCol(lsName);
+  const groupRecordList: GroupRecord[] = [];
   const single: KeyRecord[] = [];
-  const computed: ColumnType<any>[] = [];
+  const computedColumns: ColumnType<any>[] = [];
   let action;
 
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
-    if (checked.length !== 0) {
-      return checked.includes(item.dataIndex);
+    if (includeList.length !== 0) {
+      return includeList.includes(item.dataIndex);
     }
-    if (lsShowList && lsShowList.length > 0) {
-      return lsShowList.includes(item.dataIndex);
-    }
-    return item.show;
+    return !!item.show;
   };
 
   const resolveInfo = (info:ManageColumnType, records: KeyRecord[]) => {
+    // 如果是操作列
     if (info.dataIndex === 'action') {
       const { show, ...props } = info;
       action = props;
       return;
     }
+
     const show = isShow(info);
     records.push({
       dataIndex: info.dataIndex,
       title: info.title,
       show: show,
     });
+
     if (show) {
       const { show, ...props } = info;
       lsChecked.push(info.dataIndex as string);
-      computed.push(props);
+      computedColumns.push(props);
     }
   }
   columns.forEach((item) => {
@@ -69,7 +70,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
       item.records.forEach((column) => {
         resolveInfo(column, groupItem);
       });
-      allKeys.push({
+      groupRecordList.push({
         title: item.title,
         records: groupItem,
       })
@@ -79,7 +80,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
     }
   });
   if (single.length) {
-    allKeys.push({
+    groupRecordList.push({
       records: single,
     });
   }
@@ -90,10 +91,10 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
   }
   // 如果存在操作列
   if (action) {
-    computed.push(action);
+    computedColumns.push(action);
   }
   return {
-    allKeys,
-    computed,
+    groupRecordList,
+    computedColumns,
   };
 };
