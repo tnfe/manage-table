@@ -1,10 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import App from './App';
-import App from './AppRef';
+import App from './App';
+import AppRef from './AppRef';
+// import AppGroup from './AppGroup';
 import 'antd/dist/antd.css';
 
 ReactDOM.render(
-  <App />,
+  <div>
+    <App />
+    <AppRef />
+    {/*<AppGroup />*/}
+  </div>,
   document.getElementById('root')
 );
