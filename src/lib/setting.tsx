@@ -29,15 +29,12 @@ let saveMap: Record<string, string> = {};
 const SettingContent = (props: SettingContentProps) => {
   const [bigOptions, setBigOptions] = useState<BigOption[]>([]); // 所有选项
   const [indeterminate, setIndeterminate] = React.useState(true); // 是否全选
-  const [checkedList, setCheckedList] = useState<string[]>([]); // 选中的对象
-  const [clickedColCount, setClickedColCount] = useState<number>(0);
+  const [checkedList, setCheckedList] = useState<string[]>(props.checkedList); // 选中的对象
   const [totalCount, setTotalCount] = useState<number>(0);
 
   // 准备数据阶段
   useEffect(() => {
     const options: BigOption[] = [];
-    const checkeds: string[] = [];
-    let checkedNum = 0;
     let total = 0;
 
     // 遍历可选项
@@ -48,10 +45,6 @@ const SettingContent = (props: SettingContentProps) => {
         map[record.dataIndex as string] = record.title as string;
         records.push(record);
         total++;
-        if (record.show) {
-          checkeds.push(record.dataIndex);
-          checkedNum++;
-        }
       });
       options.push({records, title: item.title, ref: React.createRef()});
     });
@@ -59,9 +52,7 @@ const SettingContent = (props: SettingContentProps) => {
     saveMap = map;
     setTotalCount(total);
     setBigOptions(options);
-    setCheckedList(checkeds);
-    setClickedColCount(checkedNum);
-    setIndeterminate(checkedNum !== totalCount);
+    setIndeterminate(checkedList.length !== total);
   }, [props.choose]);
 
   // 全局选中操作
@@ -69,14 +60,12 @@ const SettingContent = (props: SettingContentProps) => {
     const checked = event.target.checked;
     setIndeterminate(false);
     if (checked) {
-      setClickedColCount(totalCount);
       setCheckedList(Object.keys(saveMap));
       // 子组全选
       bigOptions.forEach(bigOption => {
         bigOption.ref.current.selectAll();
       })
     } else {
-      setClickedColCount(0);
       setCheckedList([]);
       // 子组全部清除选中
       bigOptions.forEach(bigOption => {
@@ -93,7 +82,6 @@ const SettingContent = (props: SettingContentProps) => {
       now?.splice(index, 1);
       setCheckedList(now);
       setIndeterminate(true);
-      setClickedColCount(clickedColCount - 1);
       const bigOption = bigOptions.find((bigOption) => {
         return bigOption.records.find((record) => {
           return record.dataIndex === key;
@@ -108,16 +96,17 @@ const SettingContent = (props: SettingContentProps) => {
   // 清除全部选中
   const clearLockColumn = () => {
     setCheckedList([]);
-    setClickedColCount(0);
     setIndeterminate(false);
     bigOptions.forEach(bigOption => {
       bigOption.ref.current.clearCheck();
     })
   };
 
+  // 响应子组件的change事件
   const handleSaveChange = (index: number, checkeds: string[] | string) => {
     const list = checkedList.slice();
     const group: string[] = bigOptions[index].records.map((item) => item.dataIndex);
+
     if (Array.isArray(checkeds)) {
       if (checkeds.length === 0) {
         group.forEach((item) => {
@@ -141,8 +130,8 @@ const SettingContent = (props: SettingContentProps) => {
         list.splice(indx, 1);
       }
     }
+
     setCheckedList(list);
-    setClickedColCount(list.length);
     setIndeterminate(list.length !== totalCount);
   }
 
@@ -152,10 +141,10 @@ const SettingContent = (props: SettingContentProps) => {
       <Checkbox
         indeterminate={indeterminate}
         onChange={changeAllChecked}
-        checked={clickedColCount === totalCount}
+        checked={checkedList.length === totalCount}
         style={{ marginLeft: '18px' }}
       >
-        {clickedColCount}/{totalCount}
+        {checkedList.length}/{totalCount}
       </Checkbox>
     </span>
   );
@@ -197,7 +186,7 @@ const SettingContent = (props: SettingContentProps) => {
         <DoubleLeftOutlined onClick={clearLockColumn} />
       </div>
 
-      <Card title={`已选字段 ${clickedColCount}`} style={stCardRight} bodyStyle={stCardBody}>
+      <Card title={`已选字段 ${checkedList.length}`} style={stCardRight} bodyStyle={stCardBody}>
         {chooseList}
       </Card>
       <Divider />

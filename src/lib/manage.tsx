@@ -29,10 +29,11 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const [computedColumns, setComputedColumns] = useState<ColumnType<any>[]>([]); // 经过计算后需要进行展示的column，传给Table
   const [computedShowKeys, setComputedShowKeys] = useState<string[]>([]); // 存储计算后传递给Table展示的column的dataIndex合集，map
   useEffect(() => {
-    const { groupRecordList, computedColumns } = computeColumns(name, props.columns, computedShowKeys);
+    const { groupRecordList, computedColumns, checkedList } = computeColumns(name, props.columns, computedShowKeys);
     setComputedColumns(computedColumns);
     setGroupRecordList(groupRecordList);
-  }, [shouldShowModal, computedShowKeys]);
+    setComputedShowKeys(checkedList);
+  }, [shouldShowModal]);
 
   // 向外暴露方法
   useImperativeHandle(ref, () => {
@@ -74,7 +75,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
         onCancel={() => setShouldShowModal(false)}
         footer={false}
       >
-        <SettingContent choose={groupRecordList} onCancel={() => setShouldShowModal(false)} onOk={(keys) => handleOk(keys)} />
+        <SettingContent choose={groupRecordList} checkedList={computedShowKeys} onCancel={() => setShouldShowModal(false)} onOk={(keys) => handleOk(keys)} />
       </Modal>
     </div>
   );

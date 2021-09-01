@@ -14,6 +14,7 @@ export interface GroupRecord {
 
 export interface SettingContentProps {
   choose: GroupRecord[];
+  checkedList: string[];
   onOk: (keys: string[]) => void;
   onCancel: () => void;
 }

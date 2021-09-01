@@ -17,13 +17,11 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
   const [bigOptions, setBigOptions] = useState<CheckboxOptionType[]>([]); // 所有选项
   const [indeterminate, setIndeterminate] = React.useState(true); // 是否全选
   const [totalCount, setTotalCount] = useState<number>(0);
-  const [clickedColCount, setClickedColCount] = useState<number>(0);
   const [checkedList, setCheckedList] = useState<string[]>([]); // 选中的对象
 
   useEffect(() => {
     const options: CheckboxOptionType[] = [];
     const checkeds: string[] = [];
-    let checkedNum = 0;
     let total = 0;
 
     // 遍历可选项
@@ -36,7 +34,6 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
           value: item.dataIndex as CheckboxValueType,
         });
         if (item.show) {
-          checkedNum++;
           checkeds.push(dataIndex);
         }
       }
@@ -46,8 +43,7 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
     setTotalCount(total);
     setBigOptions(options);
     setCheckedList(checkeds);
-    setClickedColCount(checkedNum);
-    setIndeterminate(checkedNum !== totalCount && checkedNum !== 0);
+    setIndeterminate(checkeds.length !== totalCount && checkeds.length !== 0);
     // props.handleSaveChange(props.groupIndex, checkeds);
   }, [props.records]);
 
@@ -55,13 +51,11 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
     return {
       clearCheck: () => {
         setCheckedList([]);
-        setClickedColCount(0);
         setIndeterminate(false);
       },
       selectAll: () => {
-        const ckds = props.records.map((item) => item.dataIndex) as string[]
+        const ckds = props.records.map((item) => item.dataIndex)
         setCheckedList(ckds);
-        setClickedColCount(totalCount);
         setIndeterminate(false);
       },
       removeCheck: (key: string) => {
@@ -79,12 +73,10 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
     const checked = event.target.checked;
     setIndeterminate(false);
     if (checked) {
-      setClickedColCount(totalCount);
-      const ckds = props.records.map((item) => item.dataIndex) as string[]
+      const ckds = props.records.map((item) => item.dataIndex)
       setCheckedList(ckds);
       props.handleSaveChange(props.groupIndex, ckds);
     } else {
-      setClickedColCount(0);
       setCheckedList([]);
       props.handleSaveChange(props.groupIndex, []);
     }
@@ -101,7 +93,6 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
     }
     setCheckedList(values as string[]);
     setIndeterminate(values.length !== totalCount);
-    setClickedColCount(values.length);
     setIndeterminate(values.length !== totalCount && values.length !== 0);
     props.handleSaveChange(props.groupIndex, single as string);
   };
@@ -112,10 +103,10 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
       <Checkbox
         indeterminate={indeterminate}
         onChange={changeAllChecked}
-        checked={clickedColCount === totalCount}
+        checked={checkedList.length === totalCount}
         style={{ marginLeft: '18px' }}
       >
-        {clickedColCount}/{totalCount}
+        {checkedList.length}/{totalCount}
       </Checkbox>
     </span>
   ) : null;

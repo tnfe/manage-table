@@ -24,6 +24,7 @@ const setLSShowCol = (lsName: string, values: string[]) => {
 interface ComputeReturn {
   groupRecordList: GroupRecord[];
   computedColumns: ColumnType<any>[];
+  checkedList: string[];
 }
 
 export const computeColumns = (lsName: string, columns: ManageColumnType[] | GroupManageColumn[], checked: string[]): ComputeReturn => {
@@ -33,6 +34,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
   const single: KeyRecord[] = [];
   const computedColumns: ColumnType<any>[] = [];
   let action;
+  const map: Record<string, ColumnType<any>> = {};
 
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
@@ -56,34 +58,44 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
       title: info.title,
       show: show,
     });
-
     if (show) {
       const { show, ...props } = info;
-      lsChecked.push(info.dataIndex as string);
-      computedColumns.push(props);
+      map[info.dataIndex as string] = props;
+
     }
   }
-  columns.forEach((item) => {
-    if ("records" in item && item.records) {
-      // 组
-      const groupItem: KeyRecord[] = []
-      item.records.forEach((column) => {
-        resolveInfo(column, groupItem);
-      });
-      groupRecordList.push({
-        title: item.title,
-        records: groupItem,
-      })
-    } else {
-      // 散列
-      resolveInfo(item as ManageColumnType, single);
-    }
-  });
-  if (single.length) {
-    groupRecordList.push({
-      records: single,
+
+  const doCollectGroup = () => {
+    columns.forEach((item) => {
+      if ("records" in item && item.records) {
+        // 组
+        const groupItem: KeyRecord[] = []
+        item.records.forEach((column) => {
+          resolveInfo(column, groupItem);
+        });
+        groupRecordList.push({
+          title: item.title,
+          records: groupItem,
+        })
+      } else {
+        // 散列
+        resolveInfo(item as ManageColumnType, single);
+      }
     });
+    if (single.length) {
+      groupRecordList.push({
+        records: single,
+      });
+    }
   }
+
+  doCollectGroup();
+
+  // 排序处理
+  (includeList.length > 0 ? includeList : Object.keys(map)).forEach((item) => {
+    lsChecked.push(item);
+    computedColumns.push(map[item]);
+  })
 
   // ls 暂存
   if (lsChecked.length !== 0) {
@@ -96,5 +108,6 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
   return {
     groupRecordList,
     computedColumns,
+    checkedList: lsChecked,
   };
 };
