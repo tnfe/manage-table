@@ -1,6 +1,6 @@
 {
   "name": "manage-table",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "module": "es/index.js",
   "main": "dist/index.js",
   "types": "index.d.ts",
@@ -8,6 +8,12 @@
     "type": "git",
     "url": "git@github.com:tnfe/manage-table.git"
   },
+  "keywords": [
+    "antd",
+    "Table",
+    "table",
+    "manage-table"
+  ],
   "peerDependencies": {
     "@ant-design/icons": "^4.6.4",
     "antd": "^4.12.0",
