@@ -1,5 +1,5 @@
 import typescript from 'rollup-plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
+// import { terser } from 'rollup-plugin-terser';
 
 const plugins = [
   typescript({
@@ -11,7 +11,7 @@ const plugins = [
 
 module.exports = {
   input: 'src/lib/index.ts',
-  external: ['react', 'antd/es/table/Table', 'antd', '@ant-design/icons'],
+  external: ['react', 'antd/es/table/Table', 'antd', '@ant-design/icons', 'react-beautiful-dnd'],
   plugins,
   output: [{
     file: "dist/index.js",
@@ -21,7 +21,8 @@ module.exports = {
       react: 'React',
       antd: 'antd',
       'antd/es/table/Table': 'antd/es/table/Table',
-      '@ant-design/icons': '@ant-design/icons'
+      '@ant-design/icons': '@ant-design/icons',
+      'react-beautiful-dnd': 'react-beautiful-dnd',
     }
   }, {
     file: "es/index.js",
@@ -31,7 +32,8 @@ module.exports = {
       react: 'React',
       antd: 'antd',
       'antd/es/table/Table': 'antd/es/table/Table',
-      '@ant-design/icons': '@ant-design/icons'
+      '@ant-design/icons': '@ant-design/icons',
+      'react-beautiful-dnd': 'react-beautiful-dnd',
     }
   }]
 };

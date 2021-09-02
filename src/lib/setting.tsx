@@ -4,6 +4,7 @@ import { Button, Card, Checkbox, Divider } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { CloseOutlined, DoubleLeftOutlined, MoreOutlined } from '@ant-design/icons';
 import GroupSet from "./groupSett";
+import DragList from "./dragList";
 
 const stCardLeft = { height: '70vh', width: '60%', display: 'inline-block', verticalAlign: 'top' };
 const stCardRight = { height: '70vh', width: '32%', display: 'inline-block', verticalAlign: 'top' };
@@ -19,8 +20,6 @@ const stBlank: React.CSSProperties = {
   display: 'inline-block',
   cursor: 'pointer',
 };
-const stCloseIcon: React.CSSProperties = { float: 'right', lineHeight: '28px' };
-const stChooseItem = { lineHeight: '28px', border: '1px solid #d9d9d9', padding: '0 5px', margin: '2px 0', };
 
 // 暂存数据
 let saveMap: Record<string, string> = {};
@@ -135,6 +134,10 @@ const SettingContent = (props: SettingContentProps) => {
     setIndeterminate(list.length !== totalCount);
   }
 
+  const onChangeSort = (list: string[]) => {
+    setCheckedList(list);
+  }
+
   const cardTitle = (
     <span>
       可选字段
@@ -151,15 +154,16 @@ const SettingContent = (props: SettingContentProps) => {
 
   const chooseList = (
     <div>
-      {checkedList?.map((item) => {
-        return (
-          <div style={stChooseItem} key={item}>
-            <MoreOutlined />
-            {saveMap[item]}
-            <CloseOutlined style={stCloseIcon} onClick={() => unClickedColKey(item)} />
-          </div>
-        );
-      })}
+      <DragList list={checkedList} onChange={onChangeSort} removeItem={unClickedColKey}/>
+      {/*{checkedList?.map((item) => {*/}
+      {/*  return (*/}
+      {/*    <div style={stChooseItem} key={item}>*/}
+      {/*      <MoreOutlined />*/}
+      {/*      {saveMap[item]}*/}
+      {/*      <CloseOutlined style={stCloseIcon} onClick={() => unClickedColKey(item)} />*/}
+      {/*    </div>*/}
+      {/*  );*/}
+      {/*})}*/}
     </div>
   );
 

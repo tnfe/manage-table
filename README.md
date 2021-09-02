@@ -56,7 +56,6 @@ export default App;
 import React from "react";
 import { Button } from "antd";
 import ManageTable from "manage-table";
-import "./styles.css";
 
 export default function App2() {
   const mockColumns = new Array(50).fill("").map((_item, index) => {
@@ -95,6 +94,58 @@ export default function App2() {
 }
 
 ```
+使用方式三、按组划分
+```javascript
+import React from "react";
+import { Button } from "antd";
+import ManageTable from "manage-table";
+
+const mockGroup = () => {
+  const data = new Array(4).fill('').map((_item:string, index: number) => {
+    return {
+      title: '分组' + index,
+      records: new Array(10).fill('').map((_item: string, indx) => {
+        return {
+          dataIndex: 'title' + index + '_' + indx,
+          key: 'title' + index + '_' + indx,
+          title: '标题' + index + '_' + indx,
+          show: indx % 5 === 0,
+        };
+      }),
+    };
+  });
+  // 任何一个索引都可以，不必须是0
+  data[0].records.push({
+    dataIndex: 'action',
+    key: 'action',
+    title: '操作列',
+    show: true,
+  })
+  return data;
+}
+
+function AppGroupRef() {
+  const ref: any = React.createRef();
+
+  const handleSet = () => {
+    ref.current.showModal();
+  }
+
+  const SettingHeader = (
+    <div style={{textAlign: 'left'}}>
+      <Button type="primary" onClick={handleSet}>自定义设置</Button>
+    </div>
+  );
+  return (
+    <div className="App">
+      <ManageTable ref={ref} SettingComp={SettingHeader} name="testTableGroup" columns={mockGroup()}/>
+    </div>
+  );
+}
+
+export default AppGroupRef;
+```
+
 
 ## 参数说明
 
@@ -103,7 +154,7 @@ ManageTable, 继承自antd的Table
 | **参数名**     | **类型**     | **说明**     |
 | ---------- | :-----------:  | :-----------: |
 | name | string | 存储所使用的唯一的key，必传
-| columns | ManageColumnType | 列数据， 必传
+| columns | ManageColumnType[] | GroupManageColumn[] | 列数据， 必传
 | ref | React.createRef()的返回对象 | 增加面板， 非必传
 | SettingComp | React.ReactNode | 自定义设置头部， 非必传
 | setTitle | React.ReactNode、string | 自定义弹窗的标题，默认'设置显示字段'， 非必传
@@ -113,6 +164,13 @@ ManageColumnType， 继承自antd的Table的ColumnType
 | **参数名**     | **类型**     | **说明**     |
 | ---------- | :-----------:  | :-----------: |
 | show | boolean | 是否默认显示 |
+
+GroupManageColumn， 继承自antd的Table的ColumnType
+
+| **参数名**     | **类型**     | **说明**     |
+| ---------- | :-----------:  | :-----------: |
+| title | string | 组名，必传 |
+| records | ManageColumnType[] | 列数据， 必传 |
 
 ## demo展示
 示例参考：[codesanbox - manage-table](https://codesandbox.io/s/sad-jones-2tgf5)

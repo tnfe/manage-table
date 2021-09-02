@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "antd";
 import { mockGroup } from "./mock";
 
-function AppRef() {
+function AppGroupRef() {
   const ref: any = React.createRef();
 
   const handleSet = () => {
@@ -23,4 +23,4 @@ function AppRef() {
   );
 }
 
-export default AppRef;
+export default AppGroupRef;
