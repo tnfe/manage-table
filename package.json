@@ -1,6 +1,6 @@
 {
   "name": "manage-table",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "module": "es/index.js",
   "main": "dist/index.js",
   "types": "index.d.ts",

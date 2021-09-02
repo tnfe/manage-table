@@ -177,7 +177,8 @@ GroupManageColumn， 继承自antd的Table的ColumnType
 
 ![](https://github.com/tnfe/manage-table/blob/master/img/lia.png?raw=true)
 
-![](https://github.com/tnfe/manage-table/blob/master/img/demo.png?raw=true)
+![](https://github.com/tnfe/manage-table/blob/master/img/single.png?raw=true)
+![](https://github.com/tnfe/manage-table/blob/master/img/group.png?raw=true)
 
 ## 开发&测试
 
