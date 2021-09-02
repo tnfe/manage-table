@@ -2,7 +2,7 @@ import ManageTable  from "./lib";
 import './App.css';
 import React from "react";
 import { Button } from "antd";
-import { mockGroup } from "./mock";
+import { mockGroup, mockGroupDataSource } from "./mock";
 
 function AppGroupRef() {
   const ref: any = React.createRef();
@@ -18,7 +18,7 @@ function AppGroupRef() {
   );
   return (
     <div className="App">
-      <ManageTable ref={ref} SettingComp={SettingHeader} name="testTableGroup" columns={mockGroup()}/>
+      <ManageTable ref={ref} rowKey="id" dataSource={mockGroupDataSource()} SettingComp={SettingHeader} name="testTableGroup" columns={mockGroup()}/>
     </div>
   );
 }

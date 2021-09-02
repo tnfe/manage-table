@@ -2,7 +2,7 @@ import ManageTable  from "./lib";
 import './App.css';
 import React from "react";
 import { Button } from "antd";
-import { mockColumns } from "./mock";
+import { mockColumns, mockDataSource } from "./mock";
 
 function AppRef() {
   const ref: any = React.createRef();
@@ -18,7 +18,7 @@ function AppRef() {
   );
   return (
     <div className="App">
-      <ManageTable ref={ref} setTitle="显示个设置标题" SettingComp={SettingHeader} name="testTableRef" columns={mockColumns()}/>
+      <ManageTable ref={ref} setTitle="显示个设置标题" dataSource={mockDataSource()}  SettingComp={SettingHeader} name="testTableRef" columns={mockColumns()}/>
     </div>
   );
 }

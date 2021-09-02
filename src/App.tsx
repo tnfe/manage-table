@@ -1,12 +1,12 @@
 import ManageTable  from "./lib";
 import './App.css';
 import React from "react";
-import { mockColumns } from "./mock";
+import { mockColumns, mockDataSource } from "./mock";
 
 function App() {
   return (
     <div className="App">
-      <ManageTable name="testTableSingle" columns={mockColumns()}/>
+      <ManageTable name="testTableSingle" rowKey="id" dataSource={mockDataSource()} columns={mockColumns()}/>
     </div>
   );
 }
