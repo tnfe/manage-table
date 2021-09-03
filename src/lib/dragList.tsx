@@ -1,6 +1,7 @@
 import React from "react";
 import { DragDropContext, Droppable, Draggable, DropResult, ResponderProvided } from "react-beautiful-dnd";
 import { CloseOutlined, MoreOutlined } from "@ant-design/icons";
+import { checkedItem } from "./type";
 
 const stCloseIcon: React.CSSProperties = { float: 'right', lineHeight: '28px' };
 const stChooseItem = { lineHeight: '28px' };
@@ -24,7 +25,7 @@ const getListStyle = (isDraggingOver: boolean) => ({
   width: '100%',
 });
 
-const reorder = (list: string[], startIndex: number, endIndex: number) => {
+const reorder = (list: checkedItem[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -33,8 +34,8 @@ const reorder = (list: string[], startIndex: number, endIndex: number) => {
 };
 
 interface DragListProps {
-  list: string[];
-  onChange: (list: string[]) => void;
+  list: checkedItem[];
+  onChange: (list: checkedItem[]) => void;
   removeItem: (key: string) => void;
 }
 const DragList = (props: DragListProps) => {
@@ -56,7 +57,7 @@ const DragList = (props: DragListProps) => {
             style={getListStyle(snapshot.isDraggingOver)}
           >
             {props.list.map((item, index) => (
-              <Draggable key={item} draggableId={item} index={index}>
+              <Draggable key={item.dataIndex} draggableId={item.dataIndex} index={index}>
                 {(provided, snapshot) => (
                   <div
                     ref={provided.innerRef}
@@ -67,10 +68,10 @@ const DragList = (props: DragListProps) => {
                       provided.draggableProps.style
                     )}
                   >
-                    <div style={stChooseItem} key={item}>
+                    <div style={stChooseItem} key={item.dataIndex}>
                       <MoreOutlined />
-                      {item}
-                      <CloseOutlined style={stCloseIcon} onClick={() => props.removeItem(item)} />
+                      {item.title}
+                      <CloseOutlined style={stCloseIcon} onClick={() => props.removeItem(item.dataIndex)} />
                     </div>
                   </div>
                 )}

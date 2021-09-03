@@ -1,5 +1,10 @@
 import React from 'react';
 
+export interface checkedItem {
+  dataIndex: string;
+  title: React.ReactNode;
+}
+
 export interface KeyRecord {
   dataIndex: string;
   title: React.ReactNode;

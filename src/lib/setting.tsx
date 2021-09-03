@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { BigOption, KeyRecord, SettingContentProps } from './type';
+import { BigOption, checkedItem, KeyRecord, SettingContentProps } from './type';
 import { Button, Card, Checkbox, Divider } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { CloseOutlined, DoubleLeftOutlined, MoreOutlined } from '@ant-design/icons';
+import { DoubleLeftOutlined } from '@ant-design/icons';
 import GroupSet from "./groupSett";
 import DragList from "./dragList";
 
@@ -22,7 +22,7 @@ const stBlank: React.CSSProperties = {
 };
 
 // 暂存数据
-let saveMap: Record<string, string> = {};
+let saveMap: Record<string, checkedItem>= {};
 
 
 const SettingContent = (props: SettingContentProps) => {
@@ -37,11 +37,14 @@ const SettingContent = (props: SettingContentProps) => {
     let total = 0;
 
     // 遍历可选项
-    const map: Record<string, string> = {};
+    const map: Record<string, checkedItem> = {};
     props.choose.forEach((item) => {
       const records: KeyRecord[] = [];
       item.records.forEach((record) => {
-        map[record.dataIndex as string] = record.title as string;
+        map[record.dataIndex as string] = {
+          title: record.title,
+          dataIndex: record.dataIndex
+        };
         records.push(record);
         total++;
       });
@@ -129,13 +132,13 @@ const SettingContent = (props: SettingContentProps) => {
         list.splice(indx, 1);
       }
     }
-
     setCheckedList(list);
     setIndeterminate(list.length !== totalCount);
   }
 
-  const onChangeSort = (list: string[]) => {
-    setCheckedList(list);
+  const onChangeSort = (list: checkedItem[]) => {
+    const result = list.map((value) => value.dataIndex);
+    setCheckedList(result);
   }
 
   const cardTitle = (
@@ -151,19 +154,15 @@ const SettingContent = (props: SettingContentProps) => {
       </Checkbox>
     </span>
   );
-
+  const dragList: checkedItem[] = [];
+  checkedList.forEach((key) => {
+    if (saveMap[key]) {
+      dragList.push(saveMap[key])
+    }
+  });
   const chooseList = (
     <div>
-      <DragList list={checkedList} onChange={onChangeSort} removeItem={unClickedColKey}/>
-      {/*{checkedList?.map((item) => {*/}
-      {/*  return (*/}
-      {/*    <div style={stChooseItem} key={item}>*/}
-      {/*      <MoreOutlined />*/}
-      {/*      {saveMap[item]}*/}
-      {/*      <CloseOutlined style={stCloseIcon} onClick={() => unClickedColKey(item)} />*/}
-      {/*    </div>*/}
-      {/*  );*/}
-      {/*})}*/}
+      <DragList list={dragList} onChange={onChangeSort} removeItem={unClickedColKey}/>
     </div>
   );
 
