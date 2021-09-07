@@ -93,8 +93,10 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
   // 排序处理
   (includeList.length > 0 ? includeList : Object.keys(map)).forEach((item) => {
-    lsChecked.push(item);
-    computedColumns.push(map[item]);
+    if (map[item]) {
+      lsChecked.push(item);
+      computedColumns.push(map[item]);
+    }
   })
 
   // ls 暂存
