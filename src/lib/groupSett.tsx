@@ -1,8 +1,8 @@
 import React, { useEffect, useImperativeHandle, useState } from "react";
 import { KeyRecord } from "./type";
 import { Checkbox, CheckboxOptionType, Divider, Tag } from "antd";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { CheckboxValueType } from "antd/es/checkbox/Group";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
+import { CheckboxValueType } from "antd/lib/checkbox/Group";
 
 const stSelectableItem = { display: 'inline-block', width: '208px' };
 
@@ -31,7 +31,7 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
         total++;
         options.push({
           label: item.title,
-          value: item.dataIndex as CheckboxValueType,
+          value: item.dataIndex,
         });
         if (item.show) {
           checkeds.push(dataIndex);

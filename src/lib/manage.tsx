@@ -1,10 +1,10 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
-import Table from 'antd/es/table/Table';
+import { Table } from 'antd';
 import { Button, Modal } from 'antd';
 import { computeColumns } from './util';
 import SettingContent from './setting';
 import { GroupRecord } from './type';
-import { ColumnType } from 'antd/es/table';
+import { ColumnType } from 'antd/lib/table';
 import { IMangeTableProps } from "../../index";
 
 // 默认头部设置
@@ -33,7 +33,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
     setComputedColumns(computedColumns);
     setGroupRecordList(groupRecordList);
     setComputedShowKeys(checkedList);
-  }, [shouldShowModal]);
+  }, [shouldShowModal, props.columns]);
 
   // 向外暴露方法
   useImperativeHandle(ref, () => {

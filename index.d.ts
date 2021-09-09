@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableProps } from 'antd';
-import { ColumnType } from "antd/es/table";
+import { ColumnType } from "antd/lib/table";
 
 export interface ManageColumnType extends ColumnType<any> {
   show?: boolean;

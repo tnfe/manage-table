@@ -1,5 +1,5 @@
 import { GroupRecord, KeyRecord } from './type';
-import { ColumnType } from 'antd/es/table';
+import { ColumnType } from 'antd/lib/table';
 import { GroupManageColumn, ManageColumnType } from "../../index";
 
 const ManageTable = 'ManageTable';
@@ -93,8 +93,8 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
   // 排序处理
   (includeList.length > 0 ? includeList : Object.keys(map)).forEach((item) => {
+    lsChecked.push(item);
     if (map[item]) {
-      lsChecked.push(item);
       computedColumns.push(map[item]);
     }
   })

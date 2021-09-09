@@ -11,7 +11,7 @@ const plugins = [
 
 module.exports = {
   input: 'src/lib/index.ts',
-  external: ['react', 'antd/es/table/Table', 'antd', '@ant-design/icons', 'react-beautiful-dnd'],
+  external: ['react', 'antd/lib/table/Table', 'antd', '@ant-design/icons', 'react-beautiful-dnd'],
   plugins,
   output: [{
     file: "dist/index.js",
@@ -20,7 +20,7 @@ module.exports = {
     globals: {
       react: 'React',
       antd: 'antd',
-      'antd/es/table/Table': 'antd/es/table/Table',
+      'antd/lib/table/Table': 'antd/lib/table/Table',
       '@ant-design/icons': '@ant-design/icons',
       'react-beautiful-dnd': 'react-beautiful-dnd',
     }
@@ -31,7 +31,7 @@ module.exports = {
     globals: {
       react: 'React',
       antd: 'antd',
-      'antd/es/table/Table': 'antd/es/table/Table',
+      'antd/lib/table/Table': 'antd/lib/table/Table',
       '@ant-design/icons': '@ant-design/icons',
       'react-beautiful-dnd': 'react-beautiful-dnd',
     }

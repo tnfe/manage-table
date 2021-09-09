@@ -1,12 +1,18 @@
 import ManageTable  from "./lib";
 import './App.css';
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { mockColumns, mockDataSource } from "./mock";
 
 function App() {
+  const [columns, setColumns] = useState(mockColumns().slice(20));
+  useEffect(() => {
+    setTimeout(() => {
+      setColumns(mockColumns());
+    }, 2000);
+  });
   return (
     <div className="App">
-      <ManageTable name="testTableSingle" rowKey="id" dataSource={mockDataSource()} columns={mockColumns()}/>
+      <ManageTable name="testTableSingle" rowKey="id" dataSource={mockDataSource()} columns={columns}/>
     </div>
   );
 }

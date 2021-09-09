@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BigOption, checkedItem, KeyRecord, SettingContentProps } from './type';
 import { Button, Card, Checkbox, Divider } from 'antd';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { DoubleLeftOutlined } from '@ant-design/icons';
 import GroupSet from "./groupSett";
 import DragList from "./dragList";
