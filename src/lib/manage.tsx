@@ -1,7 +1,7 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { Table } from 'antd';
 import { Button, Modal } from 'antd';
-import { computeColumns } from './util';
+import { computeColumns, setLSShowCol } from './util';
 import SettingContent from './setting';
 import { GroupRecord } from './type';
 import { ColumnType } from 'antd/lib/table';
@@ -29,10 +29,12 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const [computedColumns, setComputedColumns] = useState<ColumnType<any>[]>([]); // 经过计算后需要进行展示的column，传给Table
   const [computedShowKeys, setComputedShowKeys] = useState<string[]>([]); // 存储计算后传递给Table展示的column的dataIndex合集，map
   useEffect(() => {
-    const { groupRecordList, computedColumns, checkedList } = computeColumns(name, props.columns, computedShowKeys);
-    setComputedColumns(computedColumns);
-    setGroupRecordList(groupRecordList);
-    setComputedShowKeys(checkedList);
+    if (shouldShowModal === false) {
+      const { groupRecordList, computedColumns, checkedList } = computeColumns(name, props.columns);
+      setComputedColumns(computedColumns);
+      setGroupRecordList(groupRecordList);
+      setComputedShowKeys(checkedList);
+    }
   }, [shouldShowModal, props.columns]);
 
   // 向外暴露方法
@@ -49,7 +51,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
 
   //保存变更
   const handleOk = (keys: string[]) => {
-    setComputedShowKeys(keys);
+    setLSShowCol(name, keys);
     setShouldShowModal(false);
   };
 

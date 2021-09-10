@@ -9,7 +9,7 @@ function App() {
     setTimeout(() => {
       setColumns(mockColumns());
     }, 2000);
-  });
+  }, []);
   return (
     <div className="App">
       <ManageTable name="testTableSingle" rowKey="id" dataSource={mockDataSource()} columns={columns}/>

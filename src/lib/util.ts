@@ -17,7 +17,7 @@ const getLSShowCol = (lsName: string) => {
   return [];
 };
 
-const setLSShowCol = (lsName: string, values: string[]) => {
+export const setLSShowCol = (lsName: string, values: string[]) => {
   localStorage.setItem(ManageTable + '_' + lsName, JSON.stringify(values));
 };
 
@@ -27,9 +27,8 @@ interface ComputeReturn {
   checkedList: string[];
 }
 
-export const computeColumns = (lsName: string, columns: ManageColumnType[] | GroupManageColumn[], checked: string[]): ComputeReturn => {
-  const lsChecked: string[] = [];
-  const includeList: string[] = checked.length > 0 ? checked : getLSShowCol(lsName);
+export const computeColumns = (lsName: string, columns: ManageColumnType[] | GroupManageColumn[]): ComputeReturn => {
+  const preLsChecked: string[] = getLSShowCol(lsName);
   const groupRecordList: GroupRecord[] = [];
   const single: KeyRecord[] = [];
   const computedColumns: ColumnType<any>[] = [];
@@ -38,8 +37,8 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
-    if (includeList.length !== 0) {
-      return includeList.includes(item.dataIndex);
+    if (preLsChecked.length !== 0) {
+      return preLsChecked.includes(item.dataIndex);
     }
     return !!item.show;
   };
@@ -61,7 +60,6 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
     if (show) {
       const { show, ...props } = info;
       map[info.dataIndex as string] = props;
-
     }
   }
 
@@ -91,18 +89,13 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
   doCollectGroup();
 
+  const checkedList = preLsChecked.length > 0 ? preLsChecked : Object.keys(map);
   // 排序处理
-  (includeList.length > 0 ? includeList : Object.keys(map)).forEach((item) => {
-    lsChecked.push(item);
+  checkedList.forEach((item) => {
     if (map[item]) {
       computedColumns.push(map[item]);
     }
   })
-
-  // ls 暂存
-  if (lsChecked.length !== 0) {
-    setLSShowCol(lsName, lsChecked);
-  }
   // 如果存在操作列
   if (action) {
     computedColumns.push(action);
@@ -110,6 +103,6 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
   return {
     groupRecordList,
     computedColumns,
-    checkedList: lsChecked,
+    checkedList,
   };
 };

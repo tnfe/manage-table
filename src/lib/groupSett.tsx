@@ -44,7 +44,6 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
     setBigOptions(options);
     setCheckedList(checkeds);
     setIndeterminate(checkeds.length !== totalCount && checkeds.length !== 0);
-    // props.handleSaveChange(props.groupIndex, checkeds);
   }, [props.records]);
 
   useImperativeHandle(ref, () => {
