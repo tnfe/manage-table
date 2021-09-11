@@ -21,6 +21,14 @@ export const setLSShowCol = (lsName: string, values: string[]) => {
   localStorage.setItem(ManageTable + '_' + lsName, JSON.stringify(values));
 };
 
+export const computeKey = (dataIndex: string | string[]) => {
+  if (Array.isArray(dataIndex)) {
+    return dataIndex.join('.');
+  }
+  return dataIndex;
+
+}
+
 interface ComputeReturn {
   groupRecordList: GroupRecord[];
   computedColumns: ColumnType<any>[];
@@ -37,8 +45,11 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
+    if (item.show) {
+      return true;
+    }
     if (preLsChecked.length !== 0) {
-      return preLsChecked.includes(item.dataIndex);
+      return preLsChecked.includes(computeKey(item.dataIndex));
     }
     return !!item.show;
   };
@@ -53,13 +64,14 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
     const show = isShow(info);
     records.push({
-      dataIndex: info.dataIndex,
+      dataIndex: computeKey(info.dataIndex),
       title: info.title,
       show: show,
+      originShow: info.show === true,
     });
     if (show) {
       const { show, ...props } = info;
-      map[info.dataIndex as string] = props;
+      map[computeKey(info.dataIndex)] = props;
     }
   }
 

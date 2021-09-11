@@ -81,15 +81,15 @@ const SettingContent = (props: SettingContentProps) => {
     const now = checkedList?.slice();
     const index = now?.indexOf(key);
     if (index !== -1) {
-      now?.splice(index, 1);
-      setCheckedList(now);
-      setIndeterminate(true);
       const bigOption = bigOptions.find((bigOption) => {
         return bigOption.records.find((record) => {
           return record.dataIndex === key;
         })
       });
       if (bigOption !== undefined) {
+        now?.splice(index, 1);
+        setCheckedList(now);
+        setIndeterminate(true);
         bigOption.ref.current.removeCheck(key);
       }
     }

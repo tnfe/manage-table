@@ -13,14 +13,18 @@ interface GroupSetProps {
   handleSaveChange: (index: number, checkeds: string[] | string) => void
 }
 
+interface GroupSetOptionType extends CheckboxOptionType{
+  originShow: boolean;
+}
+
 const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
-  const [bigOptions, setBigOptions] = useState<CheckboxOptionType[]>([]); // 所有选项
+  const [bigOptions, setBigOptions] = useState<GroupSetOptionType[]>([]); // 所有选项
   const [indeterminate, setIndeterminate] = React.useState(true); // 是否全选
   const [totalCount, setTotalCount] = useState<number>(0);
   const [checkedList, setCheckedList] = useState<string[]>([]); // 选中的对象
 
   useEffect(() => {
-    const options: CheckboxOptionType[] = [];
+    const options: GroupSetOptionType[] = [];
     const checkeds: string[] = [];
     let total = 0;
 
@@ -32,6 +36,7 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
         options.push({
           label: item.title,
           value: item.dataIndex,
+          originShow: item.originShow,
         });
         if (item.show) {
           checkeds.push(dataIndex);

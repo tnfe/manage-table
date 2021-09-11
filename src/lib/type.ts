@@ -9,6 +9,7 @@ export interface KeyRecord {
   dataIndex: string;
   title: React.ReactNode;
   show: boolean;
+  originShow: boolean;
 }
 
 export interface GroupRecord {
