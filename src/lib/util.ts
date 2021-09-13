@@ -45,9 +45,6 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
-    if (item.show) {
-      return true;
-    }
     if (preLsChecked.length !== 0) {
       return preLsChecked.includes(computeKey(item.dataIndex));
     }
