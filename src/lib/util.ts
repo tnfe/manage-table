@@ -42,6 +42,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
   const computedColumns: ColumnType<any>[] = [];
   let action;
   const map: Record<string, ColumnType<any>> = {};
+  const saveShowKeys: string[] = [];
 
   // 函数判断是否展示
   const isShow = (item: ManageColumnType) => {
@@ -60,15 +61,17 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
     }
 
     const show = isShow(info);
+    const dataIndex = computeKey(info.dataIndex);
     records.push({
-      dataIndex: computeKey(info.dataIndex),
+      dataIndex,
       title: info.title,
       show: show,
       originShow: info.show === true,
     });
     if (show) {
       const { show, ...props } = info;
-      map[computeKey(info.dataIndex)] = props;
+      saveShowKeys.push(dataIndex);
+      map[dataIndex] = props;
     }
   }
 
@@ -98,7 +101,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
 
   doCollectGroup();
 
-  const checkedList = preLsChecked.length > 0 ? preLsChecked : Object.keys(map);
+  const checkedList = preLsChecked.length > 0 ? preLsChecked : saveShowKeys;
   // 排序处理
   checkedList.forEach((item) => {
     if (map[item]) {
