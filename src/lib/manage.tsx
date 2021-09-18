@@ -35,7 +35,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
       setGroupRecordList(groupRecordList);
       setComputedShowKeys(checkedList);
     }
-  }, [shouldShowModal, props.columns]);
+  }, [shouldShowModal, props.columns, name]);
 
   // 向外暴露方法
   useImperativeHandle(ref, () => {
