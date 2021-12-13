@@ -23,7 +23,7 @@ const DefaultSetting = (props: SettingProps) => {
 
 // 主入口
 const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
-  const { name, setTitle, SettingComp, ...tableProps } = props;
+  const { name, setTitle, width, height, SettingComp, ...tableProps } = props;
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false); // 展示设置弹窗
   const [groupRecordList, setGroupRecordList] = useState<GroupRecord[]>([]); // 弹窗展示所需要的column组
   const [computedColumns, setComputedColumns] = useState<ColumnType<any>[]>([]); // 经过计算后需要进行展示的column，传给Table
@@ -71,8 +71,8 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
 
       <Modal
         visible={shouldShowModal}
-        width="80%"
-        style={{ height: '80vh' }}
+        width={width || '80%'}
+        style={{ height: height || '80vh' }}
         title={setTitle || '设置显示字段'}
         onCancel={() => setShouldShowModal(false)}
         footer={false}

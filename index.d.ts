@@ -14,6 +14,8 @@ export interface GroupManageColumn {
 
 export interface IMangeTableProps<RecordType extends object = any> extends TableProps<RecordType> {
   name: string;
+  width?: string;
+  height?: string;
   setTitle?: string | React.ReactNode;
   SettingComp?: false | React.ReactNode;
   columns: ManageColumnType[] | GroupManageColumn[];
