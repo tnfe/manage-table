@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "antd";
 import { mockColumns, mockDataSource } from "./mock";
 
-function AppRef() {
+const AppRef = () => {
   const ref: any = React.createRef();
 
   const handleSet = () => {
@@ -21,6 +21,6 @@ function AppRef() {
       <ManageTable ref={ref} setTitle="显示个设置标题" dataSource={mockDataSource()}  SettingComp={SettingHeader} name="testTableRef" columns={mockColumns()}/>
     </div>
   );
-}
+};
 
 export default AppRef;

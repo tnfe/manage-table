@@ -66,13 +66,13 @@ const SettingContent = (props: SettingContentProps) => {
       // 子组全选
       bigOptions.forEach(bigOption => {
         bigOption.ref.current.selectAll();
-      })
+      });
     } else {
       setCheckedList([]);
       // 子组全部清除选中
       bigOptions.forEach(bigOption => {
         bigOption.ref.current.clearCheck();
-      })
+      });
     }
   };
 
@@ -84,7 +84,7 @@ const SettingContent = (props: SettingContentProps) => {
       const bigOption = bigOptions.find((bigOption) => {
         return bigOption.records.find((record) => {
           return record.dataIndex === key;
-        })
+        });
       });
       if (bigOption !== undefined) {
         now?.splice(index, 1);
@@ -101,7 +101,7 @@ const SettingContent = (props: SettingContentProps) => {
     setIndeterminate(false);
     bigOptions.forEach(bigOption => {
       bigOption.ref.current.clearCheck();
-    })
+    });
   };
 
   // 响应子组件的change事件
@@ -122,7 +122,7 @@ const SettingContent = (props: SettingContentProps) => {
           if (!list.includes(item)) {
             list.push(item);
           }
-        })
+        });
       }
     } else {
       const indx = list.indexOf(checkeds);
@@ -134,12 +134,12 @@ const SettingContent = (props: SettingContentProps) => {
     }
     setCheckedList(list);
     setIndeterminate(list.length !== totalCount);
-  }
+  };
 
   const onChangeSort = (list: checkedItem[]) => {
     const result = list.map((value) => value.dataIndex);
     setCheckedList(result);
-  }
+  };
 
   const cardTitle = (
     <span>
@@ -157,7 +157,7 @@ const SettingContent = (props: SettingContentProps) => {
   const dragList: checkedItem[] = [];
   checkedList.forEach((key) => {
     if (saveMap[key]) {
-      dragList.push(saveMap[key])
+      dragList.push(saveMap[key]);
     }
   });
   const chooseList = (

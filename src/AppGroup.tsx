@@ -4,12 +4,12 @@ import React from "react";
 import { Button } from "antd";
 import { mockGroup, mockGroupDataSource } from "./mock";
 
-function AppGroupRef() {
+const AppGroupRef = () => {
   const ref: any = React.createRef();
 
   const handleSet = () => {
     ref.current.showModal();
-  }
+  };
 
   const SettingHeader = (
     <div style={{textAlign: 'left'}}>
@@ -21,6 +21,6 @@ function AppGroupRef() {
       <ManageTable ref={ref} rowKey="id" dataSource={mockGroupDataSource()} SettingComp={SettingHeader} name="testTableGroup" columns={mockGroup()}/>
     </div>
   );
-}
+};
 
 export default AppGroupRef;

@@ -8,7 +8,7 @@ const getLSShowCol = (lsName: string) => {
   const values = localStorage.getItem(ManageTable + '_' + lsName);
   if (values) {
     try {
-      const res = JSON.parse(values)
+      const res = JSON.parse(values);
       return Array.isArray(res) ? res : [];
     } catch (error) {
       return [];
@@ -26,8 +26,7 @@ export const computeKey = (dataIndex: string | string[]) => {
     return dataIndex.join('.');
   }
   return dataIndex;
-
-}
+};
 
 interface ComputeReturn {
   groupRecordList: GroupRecord[];
@@ -73,20 +72,20 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
       saveShowKeys.push(dataIndex);
       map[dataIndex] = props;
     }
-  }
+  };
 
   const doCollectGroup = () => {
     columns.forEach((item) => {
       if ("records" in item && item.records) {
         // 组
-        const groupItem: KeyRecord[] = []
+        const groupItem: KeyRecord[] = [];
         item.records.forEach((column) => {
           resolveInfo(column, groupItem);
         });
         groupRecordList.push({
           title: item.title,
           records: groupItem,
-        })
+        });
       } else {
         // 散列
         resolveInfo(item as ManageColumnType, single);
@@ -107,7 +106,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
     if (map[item]) {
       computedColumns.push(map[item]);
     }
-  })
+  });
   // 如果存在操作列
   if (action) {
     computedColumns.push(action);

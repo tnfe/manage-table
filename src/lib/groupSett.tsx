@@ -69,9 +69,9 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
           list.splice(index, 1);
         }
         setCheckedList(list);
-      }
-    }
-  })
+      },
+    };
+  });
 
   const changeAllChecked = (event: CheckboxChangeEvent) => {
     const checked = event.target.checked;

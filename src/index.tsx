@@ -8,7 +8,7 @@ import 'antd/dist/antd.css';
 ReactDOM.render(
   <div>
     <App />
-    {/*<AppRef />*/}
+    <AppRef />
     <AppGroup />
   </div>,
   document.getElementById('root')

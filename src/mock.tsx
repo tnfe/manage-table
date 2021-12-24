@@ -16,7 +16,7 @@ export const mockColumns = () => {
     render: (val:string) => '跳转',
   });
   return data;
-}
+};
 
 export const mockDataSource = () => {
   const result = new Array(20).fill('').map((_item: string, indx:number) => {
@@ -24,26 +24,15 @@ export const mockDataSource = () => {
       id: 'row' + indx,
     };
     new Array(10).fill('').forEach((_item: string, index) => {
-      item['title' + index] = 'value' + index
-      item.title = {
-        title0: 'title.title' + indx,
-        title1: 'title' + indx,
-        title2: 'title.title' + indx,
-        title3: 'title.title' + indx,
-        title4: 'title.title' + indx,
-        title5: 'title.title' + indx,
-        title6: 'title.title' + indx,
-        title7: 'title.title' + indx,
-        title8: 'title.title' + indx,
-        title9: 'title.title' + indx,
-        title10: 'title.title' + indx,
-        title11: 'title.title' + indx,
-      }
+      item.title = {};
+      new Array(20).fill('').forEach((it, number) => {
+        item.title['title' + number] = '标题' + number + '_' + indx;
+      });
     });
     return item;
   });
   return result;
-}
+};
 
 
 export const mockGroup = () => {
@@ -69,19 +58,19 @@ export const mockGroup = () => {
     render: (val:string) => '跳转',
   })
   return data;
-}
+};
 
 export const mockGroupDataSource = () => {
-  const result = new Array(10).fill('').map((_item: string, indx:number) => {
+  const result = new Array(10).fill('').map((_item: string, number:number) => {
     const item: Record<string, any> = {
-      id: 'row' + indx,
+      id: 'row' + number,
     };
     new Array(4).fill('').forEach((_item: string, indx:number) => {
       new Array(50).fill('').forEach((_item: string, index) => {
-        item['title' + indx + '_' + index] = 'value' + indx + '_' + index
+        item['title' + indx + '_' + index] = '列值' + indx + '_' + index + '_' + number;
       });
-    })
+    });
     return item;
   });
   return result;
-}
+};

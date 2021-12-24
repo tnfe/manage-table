@@ -43,10 +43,10 @@ const DragList = (props: DragListProps) => {
     const items = reorder(
       props.list,
       result.source.index,
-      result.destination?.index || 0
+      result.destination?.index || 0,
     );
     props.onChange(items);
-  }
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
@@ -83,6 +83,6 @@ const DragList = (props: DragListProps) => {
       </Droppable>
     </DragDropContext>
   );
-}
+};
 
 export default React.memo(DragList);
