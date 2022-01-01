@@ -1,6 +1,6 @@
 import { GroupRecord, KeyRecord } from './type';
 import { ColumnType } from 'antd/lib/table';
-import { GroupManageColumn, ManageColumnType } from "../../index";
+import { GroupManageColumn, ManageColumnType } from '../../index';
 
 const ManageTable = 'ManageTable';
 
@@ -34,8 +34,11 @@ interface ComputeReturn {
   checkedList: string[];
 }
 
-export const computeColumns = (lsName: string, columns: ManageColumnType[] | GroupManageColumn[]): ComputeReturn => {
-  const preLsChecked: string[] = getLSShowCol(lsName);
+export const computeColumns = (
+  lsName: string, columns: ManageColumnType[] | GroupManageColumn[], userInitialKeys?: string[],
+): ComputeReturn => {
+  // 优先采用用户传入的初始值，再使用localStorage缓存值
+  const preLsChecked: string[] = userInitialKeys || getLSShowCol(lsName);
   const groupRecordList: GroupRecord[] = [];
   const single: KeyRecord[] = [];
   const computedColumns: ColumnType<any>[] = [];
@@ -51,40 +54,49 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
     return !!item.show;
   };
 
-  const resolveInfo = (info:ManageColumnType, records: KeyRecord[]) => {
+  const resolveInfo = (info: ManageColumnType, records: KeyRecord[]) => {
     // 如果是操作列
     if (info.dataIndex === 'action') {
-      const { show, ...props } = info;
-      action = props;
+      const { show, ...rest } = info;
+      action = rest;
       return;
     }
+    const { isInSetting = true, isAlwaysShow = false } = info;
 
-    const show = isShow(info);
+    const computedShow = isShow(info);
     const dataIndex = computeKey(info.dataIndex);
-    records.push({
-      dataIndex,
-      title: info.title,
-      show: show,
-      originShow: info.show === true,
-    });
-    if (show) {
-      const { show, ...props } = info;
+    if (isInSetting) {
+      records.push({
+        dataIndex,
+        title: info.title,
+        show: computedShow,
+        originShow: info.show === true,
+      });
+    }
+    const { show, ...rest } = info;
+    map[dataIndex] = rest;
+    if (computedShow) {
       saveShowKeys.push(dataIndex);
-      map[dataIndex] = props;
+    }
+
+    // 确保配置 isAlwaysShow 为 true 的字段总是展现到列表头部
+    if (isAlwaysShow) {
+      if (!preLsChecked.includes(dataIndex)) preLsChecked.unshift(dataIndex);
+      if (!saveShowKeys.includes(dataIndex)) saveShowKeys.unshift(dataIndex);
     }
   };
 
   const doCollectGroup = () => {
-    columns.forEach((item) => {
-      if ("records" in item && item.records) {
+    columns.forEach((item: any) => {
+      if ('records' in item && item.records) {
         // 组
-        const groupItem: KeyRecord[] = [];
-        item.records.forEach((column) => {
-          resolveInfo(column, groupItem);
-        });
+        const groupItems: KeyRecord[] = [];
         groupRecordList.push({
           title: item.title,
-          records: groupItem,
+          records: groupItems,
+        });
+        item.records.forEach((column: ManageColumnType) => {
+          resolveInfo(column, groupItems);
         });
       } else {
         // 散列
@@ -96,7 +108,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[] | Gro
         records: single,
       });
     }
-  }
+  };
 
   doCollectGroup();
 

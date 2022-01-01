@@ -17,10 +17,10 @@ export interface GroupRecord {
   records: KeyRecord[];
 }
 
-
 export interface SettingContentProps {
   choose: GroupRecord[];
   checkedList: string[];
+  defaultCheckedList: string[];
   onOk: (keys: string[]) => void;
   onCancel: () => void;
 }
