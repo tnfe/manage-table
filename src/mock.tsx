@@ -13,13 +13,13 @@ export const mockColumns = () => {
     key: 'action',
     title: '操作',
     show: true,
-    render: (val:string) => '跳转',
+    render: (val: string) => '跳转',
   });
   return data;
 };
 
 export const mockDataSource = () => {
-  const result = new Array(20).fill('').map((_item: string, indx:number) => {
+  const result = new Array(20).fill('').map((_item: string, indx: number) => {
     const item: Record<string, any> = {
       id: 'row' + indx,
     };
@@ -35,18 +35,28 @@ export const mockDataSource = () => {
 };
 
 
-export const mockGroup = () => {
-  const data = new Array(4).fill('').map((_item:string, index: number) => {
+export const mockGroup = (defaultShowKeys?: string[]) => {
+  const dkeys = defaultShowKeys || [];
+  const data = new Array(4).fill('').map((_item: string, index: number) => {
     return {
       title: '分组' + index,
       records: new Array(10).fill('').map((_item: string, indx) => {
-        return {
-          dataIndex: 'title' + index + '_' + indx,
-          key: 'title' + index + '_' + indx,
+        const dataIndex = `title${index}_${indx}`
+        const item: any = {
+          dataIndex,
+          key: dataIndex,
           title: '标题' + index + '_' + indx,
           show: indx % 5 === 0,
-          render: (val:string) => val,
+          render: (val: string) => val,
+          isAlwaysShow: false,
+          isInSetting: true,
         };
+        if (dkeys.includes(dataIndex)) {
+          item.isAlwaysShow = true;
+          item.fixed = 'left';
+          item.isInSetting = false;
+        }
+        return item;
       }),
     };
   });
@@ -55,17 +65,20 @@ export const mockGroup = () => {
     key: 'action',
     title: '操作列',
     show: true,
-    render: (val:string) => '跳转',
+    isAlwaysShow: false,
+    isInSetting: true,
+    fixed: 'right',
+    render: (val: string) => '跳转',
   })
   return data;
 };
 
 export const mockGroupDataSource = () => {
-  const result = new Array(10).fill('').map((_item: string, number:number) => {
+  const result = new Array(10).fill('').map((_item: string, number: number) => {
     const item: Record<string, any> = {
       id: 'row' + number,
     };
-    new Array(4).fill('').forEach((_item: string, indx:number) => {
+    new Array(4).fill('').forEach((_item: string, indx: number) => {
       new Array(50).fill('').forEach((_item: string, index) => {
         item['title' + indx + '_' + index] = '列值' + indx + '_' + index + '_' + number;
       });

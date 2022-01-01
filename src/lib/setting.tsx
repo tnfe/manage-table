@@ -3,8 +3,8 @@ import { BigOption, checkedItem, KeyRecord, SettingContentProps } from './type';
 import { Button, Card, Checkbox, Divider } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { DoubleLeftOutlined } from '@ant-design/icons';
-import GroupSet from "./groupSett";
-import DragList from "./dragList";
+import GroupSet from './groupSett';
+import DragList from './dragList';
 
 const stCardLeft = { height: '70vh', width: '60%', display: 'inline-block', verticalAlign: 'top' };
 const stCardRight = { height: '70vh', width: '32%', display: 'inline-block', verticalAlign: 'top' };
@@ -22,7 +22,7 @@ const stBlank: React.CSSProperties = {
 };
 
 // 暂存数据
-let saveMap: Record<string, checkedItem>= {};
+let saveMap: Record<string, checkedItem> = {};
 
 
 const SettingContent = (props: SettingContentProps) => {
@@ -43,12 +43,12 @@ const SettingContent = (props: SettingContentProps) => {
       item.records.forEach((record) => {
         map[record.dataIndex as string] = {
           title: record.title,
-          dataIndex: record.dataIndex
+          dataIndex: record.dataIndex,
         };
         records.push(record);
         total++;
       });
-      options.push({records, title: item.title, ref: React.createRef()});
+      options.push({ records, title: item.title, ref: React.createRef() });
     });
     // 初始化状态
     saveMap = map;
@@ -64,13 +64,13 @@ const SettingContent = (props: SettingContentProps) => {
     if (checked) {
       setCheckedList(Object.keys(saveMap));
       // 子组全选
-      bigOptions.forEach(bigOption => {
+      bigOptions.forEach((bigOption) => {
         bigOption.ref.current.selectAll();
       });
     } else {
       setCheckedList([]);
       // 子组全部清除选中
-      bigOptions.forEach(bigOption => {
+      bigOptions.forEach((bigOption) => {
         bigOption.ref.current.clearCheck();
       });
     }
@@ -99,7 +99,7 @@ const SettingContent = (props: SettingContentProps) => {
   const clearLockColumn = () => {
     setCheckedList([]);
     setIndeterminate(false);
-    bigOptions.forEach(bigOption => {
+    bigOptions.forEach((bigOption) => {
       bigOption.ref.current.clearCheck();
     });
   };
@@ -107,7 +107,7 @@ const SettingContent = (props: SettingContentProps) => {
   // 响应子组件的change事件
   const handleSaveChange = (index: number, checkeds: string[] | string) => {
     const list = checkedList.slice();
-    const group: string[] = bigOptions[index].records.map((item) => item.dataIndex);
+    const group: string[] = bigOptions[index].records.map(item => item.dataIndex);
 
     if (Array.isArray(checkeds)) {
       if (checkeds.length === 0) {
@@ -116,7 +116,7 @@ const SettingContent = (props: SettingContentProps) => {
           if (indx !== -1) {
             list.splice(indx, 1);
           }
-        })
+        });
       } else {
         group.forEach((item) => {
           if (!list.includes(item)) {
@@ -137,8 +137,13 @@ const SettingContent = (props: SettingContentProps) => {
   };
 
   const onChangeSort = (list: checkedItem[]) => {
-    const result = list.map((value) => value.dataIndex);
+    const result = list.map(value => value.dataIndex);
     setCheckedList(result);
+  };
+
+  const resetDefaultCheckedList = () => {
+    setCheckedList(props.defaultCheckedList);
+    props.onOk(props.defaultCheckedList);
   };
 
   const cardTitle = (
@@ -162,7 +167,7 @@ const SettingContent = (props: SettingContentProps) => {
   });
   const chooseList = (
     <div>
-      <DragList list={dragList} onChange={onChangeSort} removeItem={unClickedColKey}/>
+      <DragList list={dragList} onChange={onChangeSort} removeItem={unClickedColKey} />
     </div>
   );
 
@@ -171,6 +176,10 @@ const SettingContent = (props: SettingContentProps) => {
       <Button style={{ marginRight: '20px' }} onClick={() => props.onCancel()}>
         取消
       </Button>
+      { props.defaultCheckedList.length > 0
+        && <Button style={{ marginRight: '20px' }} onClick={resetDefaultCheckedList}>
+          恢复默认字段
+      </Button>}
       <Button type="primary" onClick={() => props.onOk(checkedList)}>
         确定
       </Button>
@@ -181,7 +190,7 @@ const SettingContent = (props: SettingContentProps) => {
     <div style={stSetting}>
       <Card title={cardTitle} style={stCardLeft} bodyStyle={stCardBody}>
         {bigOptions.map((bigOption, index) => {
-          return <GroupSet key={index} ref={bigOption.ref} records={bigOption.records} title={bigOption.title} groupIndex={index} handleSaveChange={handleSaveChange}/>
+          return <GroupSet key={index} ref={bigOption.ref} records={bigOption.records} title={bigOption.title} groupIndex={index} handleSaveChange={handleSaveChange} />;
         })}
       </Card>
 
