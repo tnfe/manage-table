@@ -158,6 +158,9 @@ ManageTable, 继承自antd的Table
 | ref | React.createRef()的返回对象 | 增加面板， 非必传
 | SettingComp | React.ReactNode | 自定义设置头部， 非必传
 | setTitle | React.ReactNode、string | 自定义弹窗的标题，默认'设置显示字段'， 非必传
+| defaultShowKeys | string[] | 默认显示的字段，不需要进行选择or 排序
+| initialShowKeys | string[] | 初始显示的字段，自定义存储
+| onKeysSelected | (keys: string[]) => void | 存储钩子函数，搭配自定义存储使用
 
 ManageColumnType， 继承自antd的Table的ColumnType
 
