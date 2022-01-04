@@ -18,7 +18,7 @@ const AppRef = () => {
   );
   return (
     <div className="App">
-      <ManageTable ref={ref} setTitle="显示个设置标题" dataSource={mockDataSource()}  SettingComp={SettingHeader} name="testTableRef" columns={mockColumns()}/>
+      <ManageTable ref={ref} rowKey="id" setTitle="显示个设置标题" dataSource={mockDataSource()}  SettingComp={SettingHeader} name="testTableRef" columns={mockColumns()}/>
     </div>
   );
 };

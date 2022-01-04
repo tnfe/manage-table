@@ -45,6 +45,9 @@ const SettingContent = (props: SettingContentProps) => {
           title: record.title,
           dataIndex: record.dataIndex,
         };
+        if (props.defaultCheckedList.includes(record.dataIndex)) {
+          return;
+        }
         records.push(record);
         total++;
       });
@@ -68,7 +71,7 @@ const SettingContent = (props: SettingContentProps) => {
         bigOption.ref.current.selectAll();
       });
     } else {
-      setCheckedList([]);
+      setCheckedList(props.defaultCheckedList);
       // 子组全部清除选中
       bigOptions.forEach((bigOption) => {
         bigOption.ref.current.clearCheck();
@@ -97,7 +100,7 @@ const SettingContent = (props: SettingContentProps) => {
 
   // 清除全部选中
   const clearLockColumn = () => {
-    setCheckedList([]);
+    setCheckedList(props.defaultCheckedList);
     setIndeterminate(false);
     bigOptions.forEach((bigOption) => {
       bigOption.ref.current.clearCheck();
@@ -133,7 +136,8 @@ const SettingContent = (props: SettingContentProps) => {
       }
     }
     setCheckedList(list);
-    setIndeterminate(list.length !== totalCount);
+    const cha = list.length - props.defaultCheckedList.length;
+    setIndeterminate(cha !== 0 && cha !== totalCount);
   };
 
   const onChangeSort = (list: checkedItem[]) => {
@@ -155,7 +159,7 @@ const SettingContent = (props: SettingContentProps) => {
         checked={checkedList.length === totalCount}
         style={{ marginLeft: '18px' }}
       >
-        {checkedList.length}/{totalCount}
+        {checkedList.length - props.defaultCheckedList.length}/{totalCount}
       </Checkbox>
     </span>
   );

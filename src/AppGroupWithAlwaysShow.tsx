@@ -5,8 +5,9 @@ import { Button } from "antd";
 import { mockGroup, mockGroupDataSource } from "./mock";
 
 const defaultShowKeys = ['title0_0', 'title0_1', 'title1_1'];
+const initialShowKeys = ['title0_0', 'title0_1', 'title1_1', 'title1_2'];
 
-const AppGroupRef = () => {
+const AppGroupWithAlwaysShowRef = () => {
   const ref: any = React.createRef();
 
   const handleSet = () => {
@@ -20,9 +21,16 @@ const AppGroupRef = () => {
   );
   return (
     <div className="App">
-      <ManageTable ref={ref} rowKey="id" dataSource={mockGroupDataSource()} SettingComp={SettingHeader}
-        name="testTableGroup" columns={mockGroup(defaultShowKeys)} defaultShowKeys={defaultShowKeys}
-        onKeysSelected={(keys) => alert(keys)}
+      <ManageTable
+        ref={ref}
+        rowKey="id"
+        dataSource={mockGroupDataSource()}
+        SettingComp={SettingHeader}
+        name="testTableGroupAlwaysShow"
+        columns={mockGroup(defaultShowKeys)}
+        initialShowKeys={initialShowKeys}
+        defaultShowKeys={defaultShowKeys}
+        onKeysSelected={(keys) => console.log(keys)}
         scroll={{
           x: 'max-content',
         }}
@@ -31,4 +39,4 @@ const AppGroupRef = () => {
   );
 };
 
-export default AppGroupRef;
+export default AppGroupWithAlwaysShowRef;
