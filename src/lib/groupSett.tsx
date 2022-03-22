@@ -96,7 +96,7 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
       });
       setIndeterminate(ckds.length !== 0);
       setCheckedList(ckds);
-      props.handleSaveChange(props.groupIndex, ckds);
+      props.handleSaveChange(props.groupIndex, []);
     }
   };
 
