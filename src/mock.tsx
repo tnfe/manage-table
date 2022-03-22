@@ -1,3 +1,5 @@
+import { ManageColumnType } from "../index";
+
 export const mockColumns = () => {
   const data: any[] = new Array(20).fill('').map((_item: string, index) => {
     return {
@@ -37,27 +39,25 @@ export const mockDataSource = () => {
 
 export const mockGroup = (defaultShowKeys?: string[]) => {
   const dkeys = defaultShowKeys || [];
-  const data = new Array(4).fill('').map((_item: string, index: number) => {
-    return {
-      title: '分组' + index,
-      records: new Array(10).fill('').map((_item: string, indx) => {
-        const dataIndex = `title${index}_${indx}`
-        const item: any = {
-          dataIndex,
-          key: dataIndex,
-          title: '标题' + index + '_' + indx,
-          show: indx % 5 === 0,
-          render: (val: string) => val,
-        };
-        if (dkeys.includes(dataIndex)) {
-          // item.fixed = 'left';
-          item.show = true;
-        }
-        return item;
-      }),
-    };
+  const data: ManageColumnType[] = [];
+  new Array(4).fill('').forEach((_item: string, index: number) => {
+    new Array(10).fill('').forEach((_item: string, indx) => {
+      const dataIndex = `title${index}_${indx}`
+      const item: any = {
+        dataIndex,
+        key: dataIndex,
+        title: '标题' + index + '_' + indx,
+        show: indx % 5 === 0,
+        group: '分组' + index,
+        render: (val: string) => val,
+      };
+      if (dkeys.includes(dataIndex)) {
+        item.show = true;
+      }
+      data.push(item);
+    })
   });
-  data[0].records.push({
+  data.push({
     dataIndex: 'action',
     key: 'action',
     title: '操作列',

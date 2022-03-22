@@ -5,11 +5,7 @@ import { ColumnType } from "antd/lib/table";
 export interface ManageColumnType extends ColumnType<any> {
   show?: boolean;
   dataIndex: string;
-}
-
-export interface GroupManageColumn {
-  title: string;
-  records: ManageColumnType[];
+  group?: string;
 }
 
 export interface IMangeTableProps<RecordType extends object = any> extends TableProps<RecordType> {
@@ -18,7 +14,7 @@ export interface IMangeTableProps<RecordType extends object = any> extends Table
   height?: string;
   setTitle?: string | React.ReactNode;
   SettingComp?: false | React.ReactNode;
-  columns: ManageColumnType[] | GroupManageColumn[];
+  columns: ManageColumnType[];
   /** 响应恢复默认设置的 keys */
   defaultShowKeys?: string[];
   /** 固定显示的 keys */

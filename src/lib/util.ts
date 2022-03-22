@@ -1,6 +1,6 @@
 import { GroupRecord, KeyRecord } from './type';
 import { ColumnType } from 'antd/lib/table';
-import { GroupManageColumn, ManageColumnType } from '../../index';
+import { ManageColumnType } from '../../index';
 
 const ManageTable = 'ManageTable';
 
@@ -31,11 +31,10 @@ export const computeKey = (dataIndex: string | string[]) => {
 interface ComputeReturn {
   groupRecordList: GroupRecord[];
   computedColumns: ColumnType<any>[];
-  checkedList: string[];
+  computedShowKeys: string[];
 }
 
-export const computeColumns = (
-  lsName: string, columns: ManageColumnType[] | GroupManageColumn[]): ComputeReturn => {
+export const computeColumns = (lsName: string, columns: ManageColumnType[]): ComputeReturn => {
   const preLsChecked: string[] = getLSShowCol(lsName);
   const groupRecordList: GroupRecord[] = [];
   const single: KeyRecord[] = [];
@@ -75,23 +74,29 @@ export const computeColumns = (
   };
 
   const doCollectGroup = () => {
-    columns.forEach((item: any) => {
-      if ('records' in item && item.records) {
-        // 组
-        const groupItems: KeyRecord[] = [];
-        groupRecordList.push({
-          title: item.title,
-          records: groupItems,
-        });
-        item.records.forEach((column: ManageColumnType) => {
-          resolveInfo(column, groupItems);
-        });
-      } else {
-        // 散列
+    const useGroup = columns.some(item => !!item.group);
+    if (useGroup) {
+      const groupIndexMap: Record<string, number> = {};
+      columns.forEach((item) => {
+        if (item.dataIndex === 'action') {
+          const { show, ...rest } = item;
+          action = rest;
+          return;
+        }
+        const groupName = item.group || '其他';
+        if (groupIndexMap[groupName] === undefined) {
+          groupIndexMap[groupName] = groupRecordList.length;
+          groupRecordList.push({
+            title: groupName,
+            records: [],
+          });
+        }
+        resolveInfo(item as ManageColumnType, groupRecordList[groupIndexMap[groupName]].records);
+      });
+    } else {
+      columns.forEach((item) => {
         resolveInfo(item as ManageColumnType, single);
-      }
-    });
-    if (single.length) {
+      });
       groupRecordList.push({
         records: single,
       });
@@ -100,9 +105,9 @@ export const computeColumns = (
 
   doCollectGroup();
 
-  const checkedList = preLsChecked.length > 0 ? preLsChecked : saveShowKeys;
+  const computedShowKeys = preLsChecked.length > 0 ? preLsChecked : saveShowKeys;
   // 排序处理
-  checkedList.forEach((item) => {
+  computedShowKeys.forEach((item) => {
     if (map[item]) {
       computedColumns.push(map[item]);
     }
@@ -111,9 +116,10 @@ export const computeColumns = (
   if (action) {
     computedColumns.push(action);
   }
-  return {
+  const toReturn = {
     groupRecordList,
     computedColumns,
-    checkedList,
+    computedShowKeys,
   };
+  return toReturn;
 };

@@ -28,7 +28,7 @@ let saveMap: Record<string, checkedItem> = {};
 const SettingContent = (props: SettingContentProps) => {
   const [bigOptions, setBigOptions] = useState<BigOption[]>([]); // 所有选项
   const [indeterminate, setIndeterminate] = React.useState(true); // 是否全选
-  const [checkedList, setCheckedList] = useState<string[]>(props.checkedList); // 选中的对象
+  const [checkedList, setCheckedList] = useState<string[]>(props.computedShowKeys); // 选中的对象
   const [totalCount, setTotalCount] = useState<number>(0);
 
   // 准备数据阶段
