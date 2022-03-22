@@ -30,7 +30,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const [computedShowKeys, setComputedShowKeys] = useState<string[]>([]); // 存储计算后传递给Table展示的column的dataIndex合集，map
   useEffect(() => {
     if (shouldShowModal === false) {
-      const { groupRecordList, computedColumns, checkedList } = computeColumns(name, props.columns, props.initialShowKeys);
+      const { groupRecordList, computedColumns, checkedList } = computeColumns(name, props.columns);
       setComputedColumns(computedColumns);
       setGroupRecordList(groupRecordList);
       setComputedShowKeys(checkedList);
@@ -71,6 +71,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
       <Table {...tableProps} columns={computedColumns} />
 
       <Modal
+        destroyOnClose={true}
         visible={shouldShowModal}
         width={width || '80%'}
         style={{ height: height || '80vh' }}
@@ -78,8 +79,13 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
         onCancel={() => setShouldShowModal(false)}
         footer={false}
       >
-        <SettingContent choose={groupRecordList} checkedList={computedShowKeys} defaultCheckedList={props.defaultShowKeys || []}
-          onCancel={() => setShouldShowModal(false)} onOk={keys => handleOk(keys)}
+        <SettingContent
+          choose={groupRecordList}
+          checkedList={computedShowKeys}
+          fixedShowKeys={props.fixedShowKeys || []}
+          defaultShowKeys={props.defaultShowKeys || []}
+          onCancel={() => setShouldShowModal(false)}
+          onOk={keys => handleOk(keys)}
         />
       </Modal>
     </div>

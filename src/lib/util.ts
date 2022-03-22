@@ -35,10 +35,8 @@ interface ComputeReturn {
 }
 
 export const computeColumns = (
-  lsName: string, columns: ManageColumnType[] | GroupManageColumn[], userInitialKeys?: string[],
-): ComputeReturn => {
-  // 优先采用用户传入的初始值，再使用localStorage缓存值
-  const preLsChecked: string[] = userInitialKeys || getLSShowCol(lsName);
+  lsName: string, columns: ManageColumnType[] | GroupManageColumn[]): ComputeReturn => {
+  const preLsChecked: string[] = getLSShowCol(lsName);
   const groupRecordList: GroupRecord[] = [];
   const single: KeyRecord[] = [];
   const computedColumns: ColumnType<any>[] = [];
@@ -61,28 +59,18 @@ export const computeColumns = (
       action = rest;
       return;
     }
-    const { isInSetting = true, isAlwaysShow = false } = info;
-
     const computedShow = isShow(info);
     const dataIndex = computeKey(info.dataIndex);
-    if (isInSetting) {
-      records.push({
-        dataIndex,
-        title: info.title,
-        show: computedShow,
-        originShow: info.show === true,
-      });
-    }
+    records.push({
+      dataIndex,
+      title: info.title,
+      show: computedShow,
+      originShow: info.show === true,
+    });
     const { show, ...rest } = info;
     map[dataIndex] = rest;
     if (computedShow) {
       saveShowKeys.push(dataIndex);
-    }
-
-    // 确保配置 isAlwaysShow 为 true 的字段总是展现到列表头部
-    if (isAlwaysShow) {
-      if (!preLsChecked.includes(dataIndex)) preLsChecked.unshift(dataIndex);
-      if (!saveShowKeys.includes(dataIndex)) saveShowKeys.unshift(dataIndex);
     }
   };
 

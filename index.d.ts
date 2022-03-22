@@ -5,10 +5,6 @@ import { ColumnType } from "antd/lib/table";
 export interface ManageColumnType extends ColumnType<any> {
   show?: boolean;
   dataIndex: string;
-  /** [默认：false]， 是否总是展示到列表里，设置为true，可配合 fixed 设置让列固定在左侧或右侧 */
-  isAlwaysShow?: boolean;
-  /** [默认：true]，是否可在列设置里弹窗里展示，让用户调整字段顺序 */
-  isInSetting?: boolean;
 }
 
 export interface GroupManageColumn {
@@ -25,8 +21,8 @@ export interface IMangeTableProps<RecordType extends object = any> extends Table
   columns: ManageColumnType[] | GroupManageColumn[];
   /** 响应恢复默认设置的 keys */
   defaultShowKeys?: string[];
-  /** 初始的 keys */
-  initialShowKeys?: string[];
+  /** 固定显示的 keys */
+  fixedShowKeys?: string[];
   onKeysSelected?: (keys: string[]) => void;
 }
 

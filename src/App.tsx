@@ -12,6 +12,7 @@ const App = () => {
   }, []);
   return (
     <div className="App">
+      最简单的demo
       <ManageTable name="testTableSingle" rowKey="id" dataSource={mockDataSource()} columns={columns}/>
     </div>
   );

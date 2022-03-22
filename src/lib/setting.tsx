@@ -45,9 +45,6 @@ const SettingContent = (props: SettingContentProps) => {
           title: record.title,
           dataIndex: record.dataIndex,
         };
-        if (props.defaultCheckedList.includes(record.dataIndex)) {
-          return;
-        }
         records.push(record);
         total++;
       });
@@ -71,7 +68,7 @@ const SettingContent = (props: SettingContentProps) => {
         bigOption.ref.current.selectAll();
       });
     } else {
-      setCheckedList(props.defaultCheckedList);
+      setCheckedList(props.fixedShowKeys);
       // 子组全部清除选中
       bigOptions.forEach((bigOption) => {
         bigOption.ref.current.clearCheck();
@@ -81,6 +78,9 @@ const SettingContent = (props: SettingContentProps) => {
 
   // 删除选中的元素
   const unClickedColKey = (key: string) => {
+    if (props.fixedShowKeys.includes(key)) {
+      return;
+    }
     const now = checkedList?.slice();
     const index = now?.indexOf(key);
     if (index !== -1) {
@@ -100,8 +100,8 @@ const SettingContent = (props: SettingContentProps) => {
 
   // 清除全部选中
   const clearLockColumn = () => {
-    setCheckedList(props.defaultCheckedList);
-    setIndeterminate(false);
+    setCheckedList(props.fixedShowKeys);
+    setIndeterminate(props.fixedShowKeys.length !== 0);
     bigOptions.forEach((bigOption) => {
       bigOption.ref.current.clearCheck();
     });
@@ -109,12 +109,16 @@ const SettingContent = (props: SettingContentProps) => {
 
   // 响应子组件的change事件
   const handleSaveChange = (index: number, checkeds: string[] | string) => {
+
     const list = checkedList.slice();
     const group: string[] = bigOptions[index].records.map(item => item.dataIndex);
 
     if (Array.isArray(checkeds)) {
       if (checkeds.length === 0) {
         group.forEach((item) => {
+          if (props.fixedShowKeys.includes(item)) {
+            return;
+          }
           const indx = list.indexOf(item);
           if (indx !== -1) {
             list.splice(indx, 1);
@@ -122,12 +126,18 @@ const SettingContent = (props: SettingContentProps) => {
         });
       } else {
         group.forEach((item) => {
+          if (props.fixedShowKeys.includes(item)) {
+            return;
+          }
           if (!list.includes(item)) {
             list.push(item);
           }
         });
       }
     } else {
+      if (props.fixedShowKeys.includes(checkeds)) {
+        return;
+      }
       const indx = list.indexOf(checkeds);
       if (indx === -1) {
         list.push(checkeds);
@@ -136,7 +146,7 @@ const SettingContent = (props: SettingContentProps) => {
       }
     }
     setCheckedList(list);
-    const cha = list.length - props.defaultCheckedList.length;
+    const cha = list.length;
     setIndeterminate(cha !== 0 && cha !== totalCount);
   };
 
@@ -146,8 +156,8 @@ const SettingContent = (props: SettingContentProps) => {
   };
 
   const resetDefaultCheckedList = () => {
-    setCheckedList(props.defaultCheckedList);
-    props.onOk(props.defaultCheckedList);
+    setCheckedList(props.defaultShowKeys);
+    props.onOk(props.defaultShowKeys);
   };
 
   const cardTitle = (
@@ -159,7 +169,7 @@ const SettingContent = (props: SettingContentProps) => {
         checked={checkedList.length === totalCount}
         style={{ marginLeft: '18px' }}
       >
-        {checkedList.length - props.defaultCheckedList.length}/{totalCount}
+        {checkedList.length}/{totalCount}
       </Checkbox>
     </span>
   );
@@ -180,7 +190,7 @@ const SettingContent = (props: SettingContentProps) => {
       <Button style={{ marginRight: '20px' }} onClick={() => props.onCancel()}>
         取消
       </Button>
-      { props.defaultCheckedList.length > 0
+      { props.defaultShowKeys.length > 0
         && <Button style={{ marginRight: '20px' }} onClick={resetDefaultCheckedList}>
           恢复默认字段
       </Button>}
@@ -194,7 +204,17 @@ const SettingContent = (props: SettingContentProps) => {
     <div style={stSetting}>
       <Card title={cardTitle} style={stCardLeft} bodyStyle={stCardBody}>
         {bigOptions.map((bigOption, index) => {
-          return <GroupSet key={index} ref={bigOption.ref} records={bigOption.records} title={bigOption.title} groupIndex={index} handleSaveChange={handleSaveChange} />;
+          return (
+            <GroupSet
+              key={index}
+              ref={bigOption.ref}
+              records={bigOption.records}
+              title={bigOption.title}
+              groupIndex={index}
+              fixedShowKeys={props.fixedShowKeys}
+              handleSaveChange={handleSaveChange}
+            />
+          );
         })}
       </Card>
 

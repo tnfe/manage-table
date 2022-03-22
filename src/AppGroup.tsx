@@ -5,6 +5,7 @@ import { Button } from "antd";
 import { mockGroup, mockGroupDataSource } from "./mock";
 
 const AppGroupRef = () => {
+  const columns = mockGroup();
   const ref: any = React.createRef();
 
   const handleSet = () => {
@@ -18,8 +19,9 @@ const AppGroupRef = () => {
   );
   return (
     <div className="App">
+      自定义分组设置
       <ManageTable ref={ref} rowKey="id" dataSource={mockGroupDataSource()} SettingComp={SettingHeader}
-        name="testTableGroup" columns={mockGroup()}
+        name="testTableGroup" columns={columns}
       />
     </div>
   );

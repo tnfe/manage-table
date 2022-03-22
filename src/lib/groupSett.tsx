@@ -10,6 +10,7 @@ interface GroupSetProps {
   title?: string;
   groupIndex: number;
   records: KeyRecord[];
+  fixedShowKeys: string[];
   handleSaveChange: (index: number, checkeds: string[] | string) => void
 }
 
@@ -54,8 +55,14 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
   useImperativeHandle(ref, () => {
     return {
       clearCheck: () => {
-        setCheckedList([]);
-        setIndeterminate(false);
+        const ckds: string[] = [];
+        props.records.forEach((item) => {
+          if (props.fixedShowKeys.includes(item.dataIndex as string)) {
+            ckds.push(item.dataIndex);
+          }
+        });
+        setIndeterminate(ckds.length !== 0);
+        setCheckedList(ckds);
       },
       selectAll: () => {
         const ckds = props.records.map((item) => item.dataIndex)
@@ -75,14 +82,21 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
 
   const changeAllChecked = (event: CheckboxChangeEvent) => {
     const checked = event.target.checked;
-    setIndeterminate(false);
     if (checked) {
+      setIndeterminate(false);
       const ckds = props.records.map((item) => item.dataIndex)
       setCheckedList(ckds);
       props.handleSaveChange(props.groupIndex, ckds);
     } else {
-      setCheckedList([]);
-      props.handleSaveChange(props.groupIndex, []);
+      const ckds: string[] = [];
+      props.records.forEach((item) => {
+        if (props.fixedShowKeys.includes(item.dataIndex as string)) {
+          ckds.push(item.dataIndex);
+        }
+      });
+      setIndeterminate(ckds.length !== 0);
+      setCheckedList(ckds);
+      props.handleSaveChange(props.groupIndex, ckds);
     }
   };
 
@@ -122,7 +136,7 @@ const GroupSet = React.forwardRef((props: GroupSetProps, ref) => {
           {bigOptions.map((item) => {
             return (
               <span key={item.value as string} style={stSelectableItem}>
-                <Checkbox value={item.value}>{item.label}</Checkbox>
+                <Checkbox disabled={props.fixedShowKeys.includes(item.value as string)} value={item.value}>{item.label}</Checkbox>
               </span>
             );
           })}

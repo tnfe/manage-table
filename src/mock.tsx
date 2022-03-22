@@ -48,13 +48,10 @@ export const mockGroup = (defaultShowKeys?: string[]) => {
           title: '标题' + index + '_' + indx,
           show: indx % 5 === 0,
           render: (val: string) => val,
-          isAlwaysShow: false,
-          isInSetting: true,
         };
         if (dkeys.includes(dataIndex)) {
-          item.isAlwaysShow = true;
-          item.fixed = 'left';
-          item.isInSetting = false;
+          // item.fixed = 'left';
+          item.show = true;
         }
         return item;
       }),
@@ -65,8 +62,6 @@ export const mockGroup = (defaultShowKeys?: string[]) => {
     key: 'action',
     title: '操作列',
     show: true,
-    isAlwaysShow: false,
-    isInSetting: true,
     fixed: 'right',
     render: (val: string) => '跳转',
   })

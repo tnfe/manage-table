@@ -18,6 +18,7 @@ const AppRef = () => {
   );
   return (
     <div className="App">
+      自定义设置
       <ManageTable ref={ref} rowKey="id" setTitle="显示个设置标题" dataSource={mockDataSource()}  SettingComp={SettingHeader} name="testTableRef" columns={mockColumns()}/>
     </div>
   );
