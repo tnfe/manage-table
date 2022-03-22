@@ -101,27 +101,33 @@ import { Button } from "antd";
 import ManageTable from "manage-table";
 
 const mockGroup = () => {
-  const data = new Array(4).fill('').map((_item:string, index: number) => {
-    return {
-      title: '分组' + index,
-      records: new Array(10).fill('').map((_item: string, indx) => {
-        return {
-          dataIndex: 'title' + index + '_' + indx,
-          key: 'title' + index + '_' + indx,
+  const data: ManageColumnType[] = [];
+    new Array(4).fill('').forEach((_item: string, index: number) => {
+      new Array(10).fill('').forEach((_item: string, indx) => {
+        const dataIndex = `title${index}_${indx}`
+        const item: any = {
+          dataIndex,
+          key: dataIndex,
           title: '标题' + index + '_' + indx,
           show: indx % 5 === 0,
+          group: '分组' + index,
+          render: (val: string) => val,
         };
-      }),
-    };
-  });
-  // 任何一个索引都可以，不必须是0
-  data[0].records.push({
-    dataIndex: 'action',
-    key: 'action',
-    title: '操作列',
-    show: true,
-  })
-  return data;
+        if (dkeys.includes(dataIndex)) {
+          item.show = true;
+        }
+        data.push(item);
+      })
+    });
+    data.push({
+      dataIndex: 'action',
+      key: 'action',
+      title: '操作列',
+      show: true,
+      fixed: 'right',
+      render: (val: string) => '跳转',
+    })
+    return data;
 }
 
 function AppGroupRef() {
@@ -167,13 +173,8 @@ ManageColumnType， 继承自antd的Table的ColumnType
 | **参数名**     | **类型**     | **说明**     |
 | ---------- | :-----------:  | :-----------: |
 | show | boolean | 是否默认显示 |
-
-GroupManageColumn， 继承自antd的Table的ColumnType
-
-| **参数名**     | **类型**     | **说明**     |
-| ---------- | :-----------:  | :-----------: |
-| title | string | 组名，必传 |
-| records | ManageColumnType[] | 列数据， 必传 |
+| dataIndex | string | antd的dataindex |
+| group | boolean | 分组名称 |
 
 ## demo展示
 示例参考：[codesanbox - manage-table](https://codesandbox.io/s/sad-jones-2tgf5)
