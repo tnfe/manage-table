@@ -155,9 +155,8 @@ const SettingContent = (props: SettingContentProps) => {
     setCheckedList(result);
   };
 
-  const resetDefaultCheckedList = () => {
-    setCheckedList(props.defaultShowKeys);
-    props.onOk(props.defaultShowKeys);
+  const onReset = () => {
+    props.onOk(props.defaultShowKeys.length > 0 ? props.defaultShowKeys : []);
   };
 
   const cardTitle = (
@@ -190,10 +189,9 @@ const SettingContent = (props: SettingContentProps) => {
       <Button style={{ marginRight: '20px' }} onClick={() => props.onCancel()}>
         取消
       </Button>
-      { props.defaultShowKeys.length > 0
-        && <Button style={{ marginRight: '20px' }} onClick={resetDefaultCheckedList}>
-          恢复默认字段
-      </Button>}
+      <Button style={{ marginRight: '20px' }} onClick={onReset}>
+        恢复默认显示字段
+      </Button>
       <Button type="primary" onClick={() => props.onOk(checkedList)}>
         确定
       </Button>
