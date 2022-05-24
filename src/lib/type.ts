@@ -18,6 +18,7 @@ export interface GroupRecord {
 }
 
 export interface SettingContentProps {
+  fixedColumns: string[];
   choose: GroupRecord[];
   computedShowKeys: string[];
   fixedShowKeys: string[];

@@ -82,3 +82,44 @@ export const mockGroupDataSource = () => {
   });
   return result;
 };
+
+export const mockFixedColumns = () => {
+  const data: any[] = new Array(20).fill('').map((_item: string, index) => {
+    return {
+      dataIndex: ['title', 'title' + index],
+      key: 'title' + index,
+      render: (val: string) => val,
+      show: index % 4 === 0,
+      title: '标题' + index,
+      width: 250,
+    };
+  });
+  data.unshift({
+    dataIndex: 'fixedLeft2',
+    fixed: 'left',
+    key: 'fixedLeft2',
+    render: () => 'fixedLeft2',
+    show: true,
+    title: 'fixedLeft2',
+    width: 250,
+  });
+  data.unshift({
+    dataIndex: 'fixedLeft1',
+    fixed: 'left',
+    key: 'fixedLeft1',
+    render: () => 'fixedLeft1',
+    show: true,
+    title: 'fixedLeft1',
+    width: 250,
+  });
+  data.push({
+    dataIndex: 'fixedRight',
+    fixed: 'right',
+    key: 'fixedRight',
+    render: () => 'fixedRight',
+    show: true,
+    title: 'fixedRight',
+    width: 250,
+  })
+  return data;
+};

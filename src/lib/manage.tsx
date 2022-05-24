@@ -28,12 +28,14 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const [groupRecordList, setGroupRecordList] = useState<GroupRecord[]>([]); // 弹窗展示所需要的column组
   const [computedColumns, setComputedColumns] = useState<ColumnType<any>[]>([]); // 经过计算后需要进行展示的column，传给Table
   const [computedShowKeys, setComputedShowKeys] = useState<string[]>([]); // 存储计算后传递给Table展示的column的dataIndex合集，map
+  const [fixedColumns, setFixedColumns] = useState<{key: string; position: boolean | 'left' | 'right'}[]>([]);
   useEffect(() => {
     if (shouldShowModal === false) {
-      const { groupRecordList, computedColumns, computedShowKeys } = computeColumns(name, props.columns);
+      const { groupRecordList, computedColumns, computedShowKeys, fixedColumns } = computeColumns(name, props.columns);
       setComputedColumns(computedColumns);
       setGroupRecordList(groupRecordList);
       setComputedShowKeys(computedShowKeys);
+      setFixedColumns(fixedColumns);
     }
   }, [shouldShowModal, props.columns, name]);
 
@@ -50,10 +52,15 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   });
 
   //保存变更
-  const handleOk = (keys: string[]) => {
-    setLSShowCol(name, keys);
+  const handleOk = (keys: string[], fixedColumns: {key: string; position: boolean | 'left' | 'right'}[]) => {
+    // Left-fixed columns need to be on the left, right-fixed columns need to be on the right.
+    const left: string[] = keys.filter((key) => fixedColumns.find((column) => column.key === key && column.position === 'left'));
+    const right: string[] = keys.filter((key) => fixedColumns.find((column) => column.key === key && column.position === 'right'));
+    const rest: string[] = keys.filter((key) => !fixedColumns.find((column) => column.key === key));
+    const newkeys = [...left, ...rest, ...right];
+    setLSShowCol(name, newkeys);
     setShouldShowModal(false);
-    props.onKeysSelected?.(keys);
+    props.onKeysSelected?.(newkeys);
   };
 
   return (
@@ -80,12 +87,13 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
         footer={false}
       >
         <SettingContent
+          fixedColumns={fixedColumns.map(column => column.key)}
           choose={groupRecordList}
           computedShowKeys={computedShowKeys}
           fixedShowKeys={props.fixedShowKeys || []}
           defaultShowKeys={props.defaultShowKeys || []}
           onCancel={() => setShouldShowModal(false)}
-          onOk={keys => handleOk(keys)}
+          onOk={keys => handleOk(keys, fixedColumns)}
         />
       </Modal>
     </div>
