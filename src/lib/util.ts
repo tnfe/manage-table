@@ -39,7 +39,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[]): Com
   const preLsChecked: string[] = getLSShowCol(lsName);
   const fixedColumns = columns.filter(column => !!column.fixed).map((column) => ({
       key: column.dataIndex,
-      position: column.fixed,
+      position: column.fixed as any,
   }));
   const groupRecordList: GroupRecord[] = [];
   const single: KeyRecord[] = [];

@@ -1,6 +1,6 @@
 {
   "name": "manage-table",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "module": "es/index.js",
   "main": "dist/index.js",
   "types": "index.d.ts",
@@ -99,7 +99,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "rm -rf dist && rm -rf es && rm -rf lib && tsc & rollup -c",
-    "test": "node scripts/s.js rc"
+    "test": "node scripts/s.js rc",
+    "lint": "eslint ./src --ext ts,tsx"
   },
   "eslintConfig": {
     "extends": [
