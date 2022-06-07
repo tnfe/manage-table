@@ -32,10 +32,15 @@ interface ComputeReturn {
   groupRecordList: GroupRecord[];
   computedColumns: ColumnType<any>[];
   computedShowKeys: string[];
+  fixedColumns: {key: string; position: boolean | 'left' | 'right'}[];
 }
 
 export const computeColumns = (lsName: string, columns: ManageColumnType[]): ComputeReturn => {
   const preLsChecked: string[] = getLSShowCol(lsName);
+  const fixedColumns = columns.filter(column => !!column.fixed).map((column) => ({
+      key: column.dataIndex,
+      position: column.fixed,
+  }));
   const groupRecordList: GroupRecord[] = [];
   const single: KeyRecord[] = [];
   const computedColumns: ColumnType<any>[] = [];
@@ -120,6 +125,7 @@ export const computeColumns = (lsName: string, columns: ManageColumnType[]): Com
     groupRecordList,
     computedColumns,
     computedShowKeys,
+    fixedColumns,
   };
   return toReturn;
 };

@@ -180,7 +180,7 @@ const SettingContent = (props: SettingContentProps) => {
   });
   const chooseList = (
     <div>
-      <DragList list={dragList} onChange={onChangeSort} removeItem={unClickedColKey} />
+      <DragList fixedColumns={props.fixedColumns} list={dragList} onChange={onChangeSort} removeItem={unClickedColKey} />
     </div>
   );
 
@@ -220,7 +220,11 @@ const SettingContent = (props: SettingContentProps) => {
         <DoubleLeftOutlined onClick={clearLockColumn} />
       </div>
 
-      <Card title={`已选字段 ${checkedList.length}`} style={stCardRight} bodyStyle={stCardBody}>
+      <Card
+        bodyStyle={stCardBody}
+        style={stCardRight}
+        title={`可排序字段 ${checkedList.filter((item) => !props.fixedColumns.includes(item)).length}`}
+      >
         {chooseList}
       </Card>
       <Divider />
