@@ -1,10 +1,8 @@
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Table } from 'antd';
 import { Button, Modal } from 'antd';
 import { computeColumns, setLSShowCol } from './util';
 import SettingContent from './setting';
-import { GroupRecord } from './type';
-import { ColumnType } from 'antd/lib/table';
 import { IMangeTableProps } from "../../index";
 
 // 默认头部设置
@@ -24,20 +22,16 @@ const DefaultSetting = (props: SettingProps) => {
 // 主入口
 const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const { name, setTitle, width, height, SettingComp, ...tableProps } = props;
+  const init = useRef(false);
+  const initConfig = computeColumns(name, props.columns);
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false); // 展示设置弹窗
-  const [groupRecordList, setGroupRecordList] = useState<GroupRecord[]>([]); // 弹窗展示所需要的column组
-  const [computedColumns, setComputedColumns] = useState<ColumnType<any>[]>([]); // 经过计算后需要进行展示的column，传给Table
-  const [computedShowKeys, setComputedShowKeys] = useState<string[]>([]); // 存储计算后传递给Table展示的column的dataIndex合集，map
-  const [fixedColumns, setFixedColumns] = useState<{key: string; position: boolean | 'left' | 'right'}[]>([]);
+  const [config, setConfig] = useState<typeof initConfig>(initConfig); // 展示设置弹窗
   useEffect(() => {
-    if (shouldShowModal === false) {
-      const { groupRecordList, computedColumns, computedShowKeys, fixedColumns } = computeColumns(name, props.columns);
-      setComputedColumns(computedColumns);
-      setGroupRecordList(groupRecordList);
-      setComputedShowKeys(computedShowKeys);
-      setFixedColumns(fixedColumns);
+    if (init.current) {
+      setConfig(computeColumns(name, props.columns));
     }
-  }, [shouldShowModal, props.columns, name]);
+    init.current = true;
+  }, [props.columns, name]);
 
   // 向外暴露方法
   useImperativeHandle(ref, () => {
@@ -47,6 +41,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
       },
       hideModal: () => {
         setShouldShowModal(false);
+        setConfig(computeColumns(name, props.columns));
       },
     };
   });
@@ -60,6 +55,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
     const newkeys = [...left, ...rest, ...right];
     setLSShowCol(name, newkeys);
     setShouldShowModal(false);
+    setConfig(computeColumns(name, props.columns));
     props.onKeysSelected?.(newkeys);
   };
 
@@ -75,7 +71,7 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
         />
       )}
 
-      <Table {...tableProps} columns={computedColumns} />
+      <Table {...tableProps} columns={config.computedColumns} />
 
       <Modal
         destroyOnClose={true}
@@ -87,13 +83,13 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
         footer={false}
       >
         <SettingContent
-          fixedColumns={fixedColumns.map(column => column.key)}
-          choose={groupRecordList}
-          computedShowKeys={computedShowKeys}
+          fixedColumns={config.fixedColumns.map(column => column.key)}
+          choose={config.groupRecordList}
+          computedShowKeys={config.computedShowKeys}
           fixedShowKeys={props.fixedShowKeys || []}
           defaultShowKeys={props.defaultShowKeys || []}
           onCancel={() => setShouldShowModal(false)}
-          onOk={keys => handleOk(keys, fixedColumns)}
+          onOk={keys => handleOk(keys, config.fixedColumns)}
         />
       </Modal>
     </div>

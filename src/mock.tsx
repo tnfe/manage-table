@@ -49,6 +49,8 @@ export const mockGroup = (defaultShowKeys?: string[]) => {
         title: '标题' + index + '_' + indx,
         show: indx % 5 === 0,
         group: '分组' + index,
+        sorter: indx % 5 === 0,
+        defaultSortOrder: indx % 5 === 0 ? 'descend' : null,
         render: (val: string) => val,
       };
       if (dkeys.includes(dataIndex)) {
