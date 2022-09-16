@@ -186,13 +186,13 @@ const SettingContent = (props: SettingContentProps) => {
 
   const footer = (
     <div style={{ textAlign: 'right' }}>
-      <Button style={{ marginRight: '20px' }} onClick={() => props.onCancel()}>
+      <Button key="cancel" style={{ marginRight: '20px' }} onClick={() => props.onCancel()}>
         取消
       </Button>
-      <Button style={{ marginRight: '20px' }} onClick={onReset}>
+      <Button key="reset" style={{ marginRight: '20px' }} onClick={onReset}>
         恢复默认显示字段
       </Button>
-      <Button type="primary" onClick={() => props.onOk(checkedList)}>
+      <Button key="ok" type="primary" onClick={() => props.onOk(checkedList)}>
         确定
       </Button>
     </div>
