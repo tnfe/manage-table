@@ -23,12 +23,12 @@ const DefaultSetting = (props: SettingProps) => {
 const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   const { name, setTitle, width, height, SettingComp, ...tableProps } = props;
   const init = useRef(false);
-  const initConfig = computeColumns(name, props.columns);
+  const initConfig = computeColumns(name, props.columns, props.defaultShowKeys);
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false); // 展示设置弹窗
   const [config, setConfig] = useState<typeof initConfig>(initConfig); // 展示设置弹窗
   useEffect(() => {
     if (init.current) {
-      setConfig(computeColumns(name, props.columns));
+      setConfig(computeColumns(name, props.columns, props.defaultShowKeys));
     }
     init.current = true;
   }, [props.columns, name]);

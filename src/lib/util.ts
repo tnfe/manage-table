@@ -35,8 +35,10 @@ interface ComputeReturn {
   fixedColumns: {key: string; position: boolean | 'left' | 'right'}[];
 }
 
-export const computeColumns = (lsName: string, columns: ManageColumnType[]): ComputeReturn => {
-  const preLsChecked: string[] = getLSShowCol(lsName);
+export const computeColumns = (lsName: string, columns: ManageColumnType[], defaultShowKeys: string[] = []): ComputeReturn => {
+  const lssShowCol = getLSShowCol(lsName);
+  console.log(defaultShowKeys);
+  const preLsChecked: string[] = lssShowCol.length > 0 ? lssShowCol : defaultShowKeys;
   const fixedColumns = columns.filter(column => !!column.fixed).map((column) => ({
       key: column.dataIndex,
       position: column.fixed as any,

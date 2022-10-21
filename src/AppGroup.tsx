@@ -20,7 +20,12 @@ const AppGroupRef = () => {
   return (
     <div className="App">
       自定义分组设置
-      <ManageTable ref={ref} rowKey="id" dataSource={mockGroupDataSource()} SettingComp={SettingHeader}
+      <ManageTable
+        defaultShowKeys={["title1_1","title1_9","title1_3","title1_5","title1_7"]}
+        ref={ref}
+        rowKey="id"
+        dataSource={mockGroupDataSource()}
+        SettingComp={SettingHeader}
         name="testTableGroup" columns={columns}
       />
     </div>

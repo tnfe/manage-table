@@ -156,7 +156,7 @@ const SettingContent = (props: SettingContentProps) => {
   };
 
   const onReset = () => {
-    props.onOk(props.defaultShowKeys.length > 0 ? props.defaultShowKeys : []);
+    props.onOk([]);
   };
 
   const cardTitle = (
