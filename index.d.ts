@@ -22,5 +22,13 @@ export interface IMangeTableProps<RecordType extends object = any> extends Table
   onKeysSelected?: (keys: string[]) => void;
 }
 
+
+export interface IManageTableRefType {
+  showModal: () => void;
+  hideModal: () => void;
+  getShowKeys: () => string[];
+}
+
+
 declare const ManageTable: React.ForwardRefExoticComponent<IMangeTableProps<any> & RefAttributes<unknown>>;
 export default ManageTable;

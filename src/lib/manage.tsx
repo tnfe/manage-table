@@ -1,9 +1,9 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { ForwardedRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Table } from 'antd';
 import { Button, Modal } from 'antd';
 import { computeColumns, setLSShowCol } from './util';
 import SettingContent from './setting';
-import { IMangeTableProps } from "../../index";
+import { IManageTableRefType, IMangeTableProps } from "../../index";
 
 // 默认头部设置
 interface SettingProps {
@@ -20,7 +20,7 @@ const DefaultSetting = (props: SettingProps) => {
 };
 
 // 主入口
-const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
+const ManageTable = React.forwardRef((props: IMangeTableProps, ref: ForwardedRef<IManageTableRefType>) => {
   const { name, setTitle, width, height, SettingComp, ...tableProps } = props;
   const init = useRef(false);
   const initConfig = computeColumns(name, props.columns, props.defaultShowKeys);
@@ -36,6 +36,9 @@ const ManageTable = React.forwardRef((props: IMangeTableProps, ref) => {
   // 向外暴露方法
   useImperativeHandle(ref, () => {
     return {
+      getShowKeys: () => {
+        return config.computedShowKeys;
+      },
       showModal: () => {
         setShouldShowModal(true);
       },
